@@ -1,0 +1,135 @@
+@import "tailwindcss";
+
+/* ─── Design Tokens ──────────────────────────────────────── */
+
+:root {
+  /* Background hierarchy */
+  --bg-base: #09090b;          /* zinc-950 */
+  --bg-surface: #18181b;       /* zinc-900 */
+  --bg-elevated: #27272a;      /* zinc-800 */
+
+  /* Foreground hierarchy */
+  --fg-primary: #fafafa;       /* zinc-50 */
+  --fg-secondary: #a1a1aa;     /* zinc-400 */
+  --fg-muted: #71717a;         /* zinc-500 */
+  --fg-faint: #3f3f46;         /* zinc-700 */
+
+  /* Accent - teal/cyan: cybersecurity-tech DNA, not generic green */
+  --accent-primary: #14b8a6;           /* teal-500 */
+  --accent-primary-hover: #2dd4bf;     /* teal-400 */
+  --accent-primary-muted: #0d9488;     /* teal-600 */
+  --accent-foreground: #042f2e;        /* teal-950 */
+  --accent-subtle: rgba(20, 184, 166, 0.08);
+  --accent-muted: rgba(20, 184, 166, 0.2);
+
+  /* Borders */
+  --border-subtle: #27272a;    /* zinc-800 */
+  --border-default: #3f3f46;   /* zinc-700 */
+
+  /* Surfaces */
+  --surface-card: #18181b;     /* zinc-900 */
+  --surface-overlay: rgba(9, 9, 11, 0.8);
+
+  /* Spacing rhythm (used via Tailwind, but documented here) */
+  /* Section vertical:    py-20 to py-32 */
+  /* Content gap:         gap-6 to gap-8 */
+  /* Heading to body:     gap-3 to gap-4 */
+  /* Mobile gutter:       px-4 to px-6 */
+  /* Grid gaps:           gap-6 to gap-10 */
+}
+
+/* ─── Tailwind v4 Theme ──────────────────────────────────── */
+
+@theme inline {
+  /* Map CSS variables to Tailwind utilities */
+  --color-background: var(--bg-base);
+  --color-foreground: var(--fg-primary);
+  --color-surface: var(--bg-surface);
+  --color-elevated: var(--bg-elevated);
+  --color-muted-fg: var(--fg-muted);
+  --color-border-subtle: var(--border-subtle);
+  --color-border-default: var(--border-default);
+
+  /* Accent family */
+  --color-accent: var(--accent-primary);
+  --color-accent-hover: var(--accent-primary-hover);
+  --color-accent-muted: var(--accent-primary-muted);
+  --color-accent-foreground: var(--accent-foreground);
+
+  /* Font families */
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+/* ─── Base Styles ────────────────────────────────────────── */
+
+* {
+  border-color: var(--border-subtle);
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background: var(--bg-base);
+  color: var(--fg-primary);
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  min-height: 100dvh;
+}
+
+/* ─── Focus Visible ──────────────────────────────────────── */
+
+:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ─── Selection ──────────────────────────────────────────── */
+
+::selection {
+  background: var(--accent-muted);
+  color: var(--fg-primary);
+}
+
+/* ─── Reduced Motion ─────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ─── Scrollbar (subtle, consistent) ─────────────────────── */
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--fg-faint);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--fg-muted);
+}
+
+/* ─── Link Reset ─────────────────────────────────────────── */
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
