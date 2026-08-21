@@ -43,7 +43,7 @@ export function Body({ children, className, muted, maxW = true }: BodyProps) {
   return (
     <p
       className={cn(
-        "text-base md:text-lg leading-relaxed text-zinc-400",
+        "text-base md:text-lg leading-relaxed text-muted-fg",
         muted && "text-zinc-500",
         maxW && "max-w-prose",
         className
@@ -65,7 +65,7 @@ export function Eyebrow({ children, className }: EyebrowProps) {
   return (
     <span
       className={cn(
-        "inline-block font-mono text-[11px] uppercase tracking-[0.18em] text-zinc-500",
+        "inline-block font-mono text-[11px] uppercase tracking-[0.18em] text-muted-fg",
         className
       )}
     >
@@ -85,7 +85,7 @@ export function Mono({ children, className }: MonoProps) {
   return (
     <span
       className={cn(
-        "font-mono text-sm text-zinc-500 tabular-nums",
+        "font-mono text-sm text-muted-fg tabular-nums",
         className
       )}
     >

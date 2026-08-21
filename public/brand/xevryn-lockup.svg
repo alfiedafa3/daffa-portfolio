@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 40" fill="none">
+  <!-- XEVRYN lockup - mark + wordmark -->
+  <!-- X mark -->
+  <path d="M4 4 L16 20 L4 36" stroke="#fafafa" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M36 4 L24 20 L36 36" stroke="#14b8a6" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Wordmark -->
+  <text x="48" y="26" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="600" letter-spacing="0.15em" fill="#fafafa">XEVRYN</text>
+</svg>

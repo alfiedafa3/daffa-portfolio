@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { SITE } from "@/lib/constants";
+import { SITE, BRAND } from "@/lib/constants";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -22,11 +22,14 @@ export const metadata: Metadata = {
   },
   description: SITE.description,
   authors: [{ name: SITE.name }],
+  icons: {
+    icon: "/favicon.svg",
+  },
   openGraph: {
     type: "website",
     locale: "en_US",
     url: SITE.url,
-    siteName: SITE.name,
+    siteName: BRAND.name,
     title: SITE.title,
     description: SITE.description,
   },

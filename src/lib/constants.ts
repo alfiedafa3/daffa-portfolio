@@ -31,13 +31,24 @@ export const BREAKPOINTS = {
   "2xl": 1536,
 } as const;
 
+/* ─── Brand Identity ─────────────────────────────────────── */
+
+export const BRAND = {
+  /** Project/technology brand */
+  name: "XEVRYN",
+  /** Brand descriptor */
+  descriptor: "Technology Studio",
+  /** Personal name of portfolio owner */
+  personalName: "Daffa Alfie",
+} as const;
+
 /* ─── Site Metadata ──────────────────────────────────────── */
 
 export const SITE = {
-  name: "Daffa Alfie",
-  title: "Daffa Alfie - Technology Builder",
+  name: BRAND.personalName,
+  title: `${BRAND.personalName} — ${BRAND.name}`,
   description:
-    "Personal portfolio of Daffa Alfie, an early-career technology builder focused on cybersecurity, software engineering, AI experimentation, and systems understanding.",
+    "Personal portfolio of Daffa Alfie, builder behind Xevryn. Focused on cybersecurity, software engineering, AI experimentation, and systems understanding.",
   url: "", // Set to production URL after deployment/domain confirmation
   github: "alfiedafa3",
   email: "", // Add when ready

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <!-- XEVRYN X mark - geometric design with teal accent -->
+  <!-- Left arm (white/metallic) -->
+  <path d="M8 8 L28 32 L8 56" stroke="#fafafa" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Right arm (teal accent) -->
+  <path d="M56 8 L36 32 L56 56" stroke="#14b8a6" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
