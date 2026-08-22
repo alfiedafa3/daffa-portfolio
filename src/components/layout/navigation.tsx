@@ -74,7 +74,7 @@ export function Navigation() {
           <a
             href="#"
             className="flex items-center gap-2 font-mono text-sm font-medium tracking-widest text-foreground transition-colors hover:text-accent"
-            aria-label="Xevryn — Daffa Alfie portfolio"
+            aria-label="Xevryn - Daffa Alfie portfolio"
           >
             {/* X mark */}
             <svg

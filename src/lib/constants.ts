@@ -46,7 +46,7 @@ export const BRAND = {
 
 export const SITE = {
   name: BRAND.personalName,
-  title: `${BRAND.personalName} — ${BRAND.name}`,
+  title: `${BRAND.personalName} - ${BRAND.name}`,
   description:
     "Personal portfolio of Daffa Alfie, builder behind Xevryn. Focused on cybersecurity, software engineering, AI experimentation, and systems understanding.",
   url: "", // Set to production URL after deployment/domain confirmation
