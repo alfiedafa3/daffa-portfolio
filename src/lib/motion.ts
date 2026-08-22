@@ -10,6 +10,45 @@
  * - Consistent stagger structure
  */
 
+import { useState, useEffect } from "react";
+import { useReducedMotion } from "motion/react";
+
+/**
+ * Hydration-safe reduced-motion hook.
+ *
+ * useReducedMotion() returns null on the server and a boolean on the
+ * client. Reading it directly during render makes SSR markup differ from
+ * the first client render, which triggers React hydration mismatches.
+ *
+ * This hook returns a deterministic value (defaultReduce) during SSR and
+ * the first client render, then updates to the real preference after
+ * hydration. Components must use the post-mount value for animation
+ * decisions that affect markup/styles.
+ */
+export function useReducedMotionSafe(
+  defaultReduce = false
+): { reduce: boolean; mounted: boolean } {
+  const preference = useReducedMotion();
+  const [mounted, setMounted] = useState(false);
+
+  const reduce = preference ?? defaultReduce;
+
+  useEffect(() => {
+    // Mark hydration complete so the real reduced-motion preference
+    // can be applied. SSR and the first client render use the
+    // deterministic default to avoid a hydration mismatch.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setMounted(true);
+  }, []);
+
+  // During SSR and first client render, return deterministic values.
+  if (!mounted) {
+    return { reduce: defaultReduce, mounted: false };
+  }
+
+  return { reduce, mounted: true };
+}
+
 /** Primary easing — sharp entry, smooth settle */
 export const EASE = {
   /** Primary: fast start, decelerate to rest */

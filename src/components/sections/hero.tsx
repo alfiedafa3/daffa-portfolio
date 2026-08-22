@@ -3,7 +3,6 @@
 import { useRef } from "react";
 import {
   motion,
-  useReducedMotion,
   useMotionValue,
   useTransform,
   useScroll,
@@ -17,6 +16,7 @@ import {
   DUR,
   STAGGER,
   HERO_TIMING,
+  useReducedMotionSafe,
   POINTER_DEPTH,
   PARALLAX,
 } from "@/lib/motion";
@@ -28,7 +28,7 @@ const DISCIPLINES = [
 ] as const;
 
 export function Hero() {
-  const reduceMotion = useReducedMotion();
+  const { reduce: reduceMotion, mounted: motionMounted } = useReducedMotionSafe();
   const sectionRef = useRef<HTMLElement>(null);
   const headlineRef = useRef<HTMLDivElement>(null);
 
@@ -214,8 +214,8 @@ export function Hero() {
             ref={headlineRef}
             className="flex flex-col gap-2"
             style={{
-              x: reduceMotion ? 0 : headlineX,
-              y: reduceMotion ? 0 : headlineY,
+              x: motionMounted && !reduceMotion ? headlineX : 0,
+              y: motionMounted && !reduceMotion ? headlineY : 0,
             }}
           >
             <h1

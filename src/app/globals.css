@@ -137,7 +137,11 @@ body {
   background: var(--fg-muted);
 }
 
-/* ─── Link Reset ─────────────────────────────────────────── */
+/* ─── Anchor Offset (fixed navbar) ───────────────────────── */
+
+section[id] {
+  scroll-margin-top: 5rem;
+}
 
 a {
   color: inherit;

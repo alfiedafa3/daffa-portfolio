@@ -1,15 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import { motion, useReducedMotion } from "motion/react";
+import { motion } from "motion/react";
 import { ABOUT, CAPABILITIES, STATUS_LABELS } from "@/data/about";
 import { Container } from "@/components/ui/container";
-import { EASE, DUR, STAGGER } from "@/lib/motion";
+import { EASE, DUR, STAGGER, useReducedMotionSafe } from "@/lib/motion";
 
 type CapabilityGroupLabel = "Building" | "Exploring" | "Learning";
 
 export function About() {
-  const reduceMotion = useReducedMotion();
+  const { reduce: reduceMotion } = useReducedMotionSafe();
   const [hoveredGroup, setHoveredGroup] = useState<CapabilityGroupLabel | null>(null);
 
   const getGroupOpacity = (label: CapabilityGroupLabel) => {

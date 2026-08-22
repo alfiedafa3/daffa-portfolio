@@ -3,12 +3,11 @@
 import { useRef } from "react";
 import {
   motion,
-  useReducedMotion,
   useInView,
 } from "motion/react";
 import { PROJECTS } from "@/data/projects";
 import { Container } from "@/components/ui/container";
-import { EASE, DUR, STAGGER } from "@/lib/motion";
+import { EASE, DUR, STAGGER, useReducedMotionSafe } from "@/lib/motion";
 
 function TwoOfUsVisual({ reduceMotion }: { reduceMotion: boolean }) {
   const maskRef = useRef<HTMLDivElement>(null);
@@ -327,7 +326,7 @@ function LiveCta({ url, reduceMotion }: { url: string; reduceMotion: boolean }) 
 }
 
 export function Work() {
-  const reduceMotion = useReducedMotion() ?? false;
+  const { reduce: reduceMotion } = useReducedMotionSafe();
   const featured = PROJECTS[0];
   const headerRef = useRef<HTMLDivElement>(null);
   const headerInView = useInView(headerRef, { once: true, amount: 0.6 });

@@ -1,8 +1,8 @@
 "use client";
 
-import { motion, useReducedMotion } from "motion/react";
+import { motion } from "motion/react";
 import { Container } from "@/components/ui/container";
-import { EASE, DUR, STAGGER } from "@/lib/motion";
+import { EASE, DUR, STAGGER, useReducedMotionSafe } from "@/lib/motion";
 
 interface Milestone {
   category: string;
@@ -64,7 +64,7 @@ const MILESTONES: Milestone[] = [
 ];
 
 export function Journey() {
-  const reduceMotion = useReducedMotion();
+  const { reduce: reduceMotion } = useReducedMotionSafe();
 
   return (
     <section

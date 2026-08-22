@@ -1,18 +1,25 @@
 "use client";
 
 import { useState, useEffect, useCallback, useRef } from "react";
-import { motion, AnimatePresence, useReducedMotion } from "motion/react";
+import { motion, AnimatePresence } from "motion/react";
 import { NAV_ITEMS } from "@/data/navigation";
 import { SITE } from "@/lib/constants";
 import { cn } from "@/lib/utils";
+import { useReducedMotionSafe } from "@/lib/motion";
+
+const SECTION_IDS = NAV_ITEMS.map((item) => item.href.slice(1));
 
 export function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
-  const reduceMotion = useReducedMotion();
+  const [activeSection, setActiveSection] = useState<string>("");
+  const { reduce: reduceMotion, mounted: motionMounted } = useReducedMotionSafe();
+  const isReduced = !motionMounted || reduceMotion;
   const triggerRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
+  const isClickScrolling = useRef(false);
 
+  // Track scroll position for navbar background
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
@@ -21,6 +28,53 @@ export function Navigation() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Active section detection via IntersectionObserver
+  useEffect(() => {
+    if (typeof IntersectionObserver === "undefined") return;
+
+    const sections = SECTION_IDS.map((id) =>
+      document.getElementById(id)
+    ).filter((el): el is HTMLElement => el !== null);
+
+    if (sections.length === 0) return;
+
+    const visibility = new Map<string, number>();
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (isClickScrolling.current) return;
+
+        for (const entry of entries) {
+          visibility.set(entry.target.id, entry.intersectionRatio);
+        }
+
+        let bestId = "";
+        let bestRatio = 0;
+        for (const [id, ratio] of visibility) {
+          if (ratio > bestRatio) {
+            bestRatio = ratio;
+            bestId = id;
+          }
+        }
+
+        if (bestId && bestRatio > 0) {
+          setActiveSection(bestId);
+        }
+      },
+      {
+        rootMargin: "-40% 0px -50% 0px",
+        threshold: [0, 0.25, 0.5, 0.75, 1],
+      }
+    );
+
+    for (const section of sections) {
+      observer.observe(section);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  // Body scroll lock for mobile menu
   useEffect(() => {
     if (isMobileOpen) {
       document.body.style.overflow = "hidden";
@@ -44,13 +98,30 @@ export function Navigation() {
 
   const closeMenu = useCallback(() => {
     setIsMobileOpen(false);
-    // Return focus to trigger button after close
     triggerRef.current?.focus();
   }, []);
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
       if (e.key === "Escape" && isMobileOpen) {
+        closeMenu();
+      }
+    },
+    [isMobileOpen, closeMenu]
+  );
+
+  const handleNavClick = useCallback(
+    (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+      // Let native anchor scroll happen, then suppress observer briefly
+      isClickScrolling.current = true;
+      setActiveSection(href.slice(1));
+
+      // Re-enable observer after scroll settles
+      setTimeout(() => {
+        isClickScrolling.current = false;
+      }, 800);
+
+      if (isMobileOpen) {
         closeMenu();
       }
     },
@@ -104,15 +175,35 @@ export function Navigation() {
 
           {/* Desktop Navigation */}
           <div className="hidden items-center gap-8 md:flex">
-            {NAV_ITEMS.map((item) => (
-              <a
-                key={item.href}
-                href={item.href}
-                className="text-[13px] font-medium uppercase tracking-[0.08em] text-muted-fg transition-colors hover:text-foreground"
-              >
-                {item.label}
-              </a>
-            ))}
+            {NAV_ITEMS.map((item) => {
+              const isActive = activeSection === item.href.slice(1);
+              return (
+                <a
+                  key={item.href}
+                  href={item.href}
+                  onClick={(e) => handleNavClick(e, item.href)}
+                  aria-current={isActive ? "page" : undefined}
+                  className={cn(
+                    "text-[13px] font-medium uppercase tracking-[0.08em] transition-colors duration-200",
+                    isActive
+                      ? "text-foreground"
+                      : "text-muted-fg hover:text-foreground"
+                  )}
+                  style={{
+                    transform:
+                      motionMounted && isActive && !isReduced
+                        ? "scale(1.08)"
+                        : "scale(1)",
+                    transformOrigin: "center",
+                    transition: isReduced
+                      ? "color 0.2s"
+                      : "color 0.2s, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
+                  }}
+                >
+                  {item.label}
+                </a>
+              );
+            })}
             <a
               href={`https://github.com/${SITE.github}`}
               target="_blank"
@@ -137,17 +228,17 @@ export function Navigation() {
               <motion.span
                 className="block h-px w-5 bg-foreground"
                 animate={isMobileOpen ? { rotate: 45, y: 3.5 } : { rotate: 0, y: 0 }}
-                transition={{ duration: reduceMotion ? 0 : 0.2 }}
+                transition={{ duration: isReduced ? 0 : 0.2 }}
               />
               <motion.span
                 className="block h-px w-5 bg-foreground"
                 animate={isMobileOpen ? { opacity: 0 } : { opacity: 1 }}
-                transition={{ duration: reduceMotion ? 0 : 0.1 }}
+                transition={{ duration: isReduced ? 0 : 0.1 }}
               />
               <motion.span
                 className="block h-px w-5 bg-foreground"
                 animate={isMobileOpen ? { rotate: -45, y: -3.5 } : { rotate: 0, y: 0 }}
-                transition={{ duration: reduceMotion ? 0 : 0.2 }}
+                transition={{ duration: isReduced ? 0 : 0.2 }}
               />
             </div>
           </button>
@@ -171,19 +262,33 @@ export function Navigation() {
             onKeyDown={handleKeyDown}
           >
             <nav className="flex h-full flex-col items-center justify-center gap-8">
-              {NAV_ITEMS.map((item, i) => (
-                <motion.a
-                  key={item.href}
-                  href={item.href}
-                  className="text-2xl text-foreground transition-colors hover:text-accent"
-                  onClick={closeMenu}
-                  initial={reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: reduceMotion ? 0 : i * 0.1, duration: reduceMotion ? 0 : 0.3 }}
-                >
-                  {item.label}
-                </motion.a>
-              ))}
+              {NAV_ITEMS.map((item, i) => {
+                const isActive = activeSection === item.href.slice(1);
+                return (
+                  <motion.a
+                    key={item.href}
+                    href={item.href}
+                    onClick={(e) => handleNavClick(e, item.href)}
+                    aria-current={isActive ? "page" : undefined}
+                    className={cn(
+                      "transition-colors",
+                      isActive ? "text-2xl text-accent" : "text-2xl text-foreground hover:text-accent"
+                    )}
+                    initial={reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: reduceMotion ? 0 : i * 0.1, duration: reduceMotion ? 0 : 0.3 }}
+                    style={{
+                      transform: isActive && !reduceMotion ? "scale(1.08)" : "scale(1)",
+                      transformOrigin: "center",
+                      transition: reduceMotion
+                        ? "color 0.2s"
+                        : "color 0.2s, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
+                    }}
+                  >
+                    {item.label}
+                  </motion.a>
+                );
+              })}
               <motion.a
                 href={`https://github.com/${SITE.github}`}
                 target="_blank"
