@@ -27,5 +27,6 @@ export const PROJECTS: Project[] = [
     stack: ["Next.js 14", "TypeScript", "Tailwind CSS"],
     architecture: ["Supabase", "OpenRouter AI", "RLS", "Server-side AI"],
     status: "active",
+    liveUrl: "https://vd-two-of-us.vercel.app/",
   },
 ];
