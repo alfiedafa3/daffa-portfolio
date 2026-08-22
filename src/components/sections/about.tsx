@@ -62,7 +62,7 @@ export function About() {
 
       <Container className="relative z-10">
         {/* Editorial statement — masked reveal */}
-        <div className="mb-16 md:mb-24">
+        <div className="mb-12 md:mb-16">
           <h2
             id="about-heading"
             className="font-display text-5xl font-bold leading-[0.9] tracking-tight text-foreground sm:text-6xl md:text-7xl lg:text-8xl"
@@ -108,7 +108,7 @@ export function About() {
         </div>
 
         {/* Narrative + identity — staggered reveal */}
-        <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1fr_280px] lg:gap-16 mb-16 md:mb-24">
+        <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1fr_280px] lg:gap-16 mb-12 md:mb-16">
           {/* Narrative */}
           <motion.div
             className="flex flex-col gap-6 max-w-xl"

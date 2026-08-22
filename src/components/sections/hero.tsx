@@ -15,7 +15,6 @@ import {
   EASE,
   DUR,
   STAGGER,
-  HERO_TIMING,
   useReducedMotionSafe,
   POINTER_DEPTH,
   PARALLAX,
@@ -97,10 +96,50 @@ export function Hero() {
   const name = "DAFFA ALFIE";
   const words = name.split(" ");
 
+  // Single parent viewport trigger drives the entire choreography.
+  // Children stagger from this shared state — no independent per-word observers.
+  const containerVariants = {
+    hidden: {},
+    visible: {
+      transition: {
+        staggerChildren: 0.07,
+        delayChildren: 0.05,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 14 },
+    visible: { opacity: 1, y: 0 },
+  };
+
+  const headlineWordVariants = {
+    hidden: { y: "110%" },
+    visible: { y: 0 },
+  };
+
+  const lineVariants = {
+    hidden: { scaleX: 0 },
+    visible: { scaleX: 1 },
+  };
+
+  // For reduced motion, hidden === visible (no animation, immediately shown)
+  const rmVariants = {
+    hidden: {},
+    visible: {},
+  };
+  const rmItem = { hidden: { opacity: 1, y: 0 }, visible: { opacity: 1, y: 0 } };
+  const rmWord = { hidden: { y: 0 }, visible: { y: 0 } };
+  const rmLine = { hidden: { scaleX: 1 }, visible: { scaleX: 1 } };
+
+  const v = reduceMotion
+    ? { container: rmVariants, item: rmItem, word: rmWord, line: rmLine }
+    : { container: containerVariants, item: itemVariants, word: headlineWordVariants, line: lineVariants };
+
   return (
     <section
       ref={sectionRef}
-      className="relative flex min-h-[85dvh] flex-col justify-center overflow-hidden"
+      className="relative flex min-h-[40dvh] flex-col justify-center overflow-hidden py-24 md:py-32"
       aria-labelledby="hero-heading"
       onPointerMove={handlePointerMove}
     >
@@ -132,12 +171,12 @@ export function Hero() {
             x: motionMounted && !reduceMotion ? geoX : 0,
             y: motionMounted && !reduceMotion ? geoY : 0,
           }}
-          initial={{ opacity: reduceMotion ? 1 : 0 }}
-          whileInView={{ opacity: 1 }}
+          variants={v.line}
+          initial="hidden"
+          whileInView="visible"
           viewport={{ once: false, amount: 0.4 }}
           transition={{
             duration: reduceMotion ? 0 : DUR.medium,
-            delay: reduceMotion ? 0 : HERO_TIMING.geometry,
             ease: EASE.gentle,
           }}
         >
@@ -189,22 +228,15 @@ export function Hero() {
       </div>
 
       <Container className="relative z-10">
-        <div className="flex flex-col gap-12 lg:gap-16">
+        <motion.div
+          className="flex flex-col gap-12 lg:gap-16"
+          variants={v.container}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: false, amount: 0.4 }}
+        >
           {/* Eyebrow — appears quickly and quietly */}
-          <motion.div
-            initial={
-              reduceMotion
-                ? { opacity: 1 }
-                : { opacity: 0, x: -12 }
-            }
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: false, amount: 0.5 }}
-            transition={{
-              duration: reduceMotion ? 0 : DUR.medium,
-              delay: reduceMotion ? 0 : HERO_TIMING.brand,
-              ease: EASE.out,
-            }}
-          >
+          <motion.div variants={v.item}>
             <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-muted-fg">
               Technology Builder
             </span>
@@ -227,25 +259,11 @@ export function Hero() {
                 <span key={word} className="block overflow-hidden">
                   <motion.span
                     className="block"
-                    initial={
-                      reduceMotion
-                        ? { opacity: 1, y: 0 }
-                        : { y: "110%" }
-                    }
-                    whileInView={{ y: 0 }}
-                    viewport={{ once: false, amount: 0.45 }}
+                    variants={v.word}
                     transition={{
                       duration: reduceMotion ? 0 : DUR.cinematic,
-                      delay:
-                        reduceMotion
-                          ? 0
-                          : i === 0
-                            ? HERO_TIMING.headline1
-                            : HERO_TIMING.headline2,
+                      delay: reduceMotion ? 0 : i * 0.08,
                       ease: EASE.gentle,
-                    }}
-                    style={{
-                      clipPath: "inset(0 0 0 0)",
                     }}
                   >
                     {word}
@@ -257,12 +275,9 @@ export function Hero() {
             {/* Accent line — draws from left to right */}
             <motion.div
               className="mt-4 h-px bg-accent"
-              initial={reduceMotion ? { scaleX: 1 } : { scaleX: 0 }}
-              whileInView={{ scaleX: 1 }}
-              viewport={{ once: false, amount: 0.45 }}
+              variants={v.line}
               transition={{
                 duration: reduceMotion ? 0 : DUR.draw,
-                delay: reduceMotion ? 0 : HERO_TIMING.accent,
                 ease: EASE.draw,
               }}
               style={{ transformOrigin: "left" }}
@@ -273,18 +288,7 @@ export function Hero() {
           <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
             <motion.div
               className="flex flex-col gap-6 max-w-lg"
-              initial={
-                reduceMotion
-                  ? { opacity: 1, x: 0 }
-                  : { opacity: 0, x: 16 }
-              }
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: false, amount: 0.35 }}
-              transition={{
-                duration: reduceMotion ? 0 : DUR.medium,
-                delay: reduceMotion ? 0 : HERO_TIMING.copy,
-                ease: EASE.out,
-              }}
+              variants={v.item}
             >
               <p className="text-base leading-relaxed text-secondary md:text-lg">
                 Building systems to understand how they work.
@@ -305,7 +309,6 @@ export function Hero() {
                   Explore Work
                   <motion.span
                     className="inline-block"
-                    initial={{ x: 0 }}
                     whileHover={reduceMotion ? undefined : { x: 3 }}
                     transition={{ duration: DUR.fast, ease: EASE.snap }}
                   >
@@ -331,38 +334,16 @@ export function Hero() {
             {/* Discipline Index — structural counterweight */}
             <motion.aside
               className="hidden flex-col gap-3 lg:flex lg:min-w-[200px]"
-              initial={
-                reduceMotion
-                  ? { opacity: 1, x: 0 }
-                  : { opacity: 0, x: 20 }
-              }
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: false, amount: 0.35 }}
-              transition={{
-                duration: reduceMotion ? 0 : DUR.medium,
-                delay: reduceMotion ? 0 : HERO_TIMING.index,
-                ease: EASE.out,
-              }}
+              variants={v.item}
               aria-label="Core disciplines"
             >
               {DISCIPLINES.map((label, i) => (
                 <motion.div
                   key={label}
                   className="flex items-baseline gap-3"
-                  initial={
-                    reduceMotion
-                      ? { opacity: 1, x: 0 }
-                      : { opacity: 0, x: 12 }
-                  }
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: false, amount: 0.35 }}
+                  variants={v.item}
                   transition={{
-                    duration: reduceMotion ? 0 : DUR.entrance,
-                    delay:
-                      reduceMotion
-                        ? 0
-                        : HERO_TIMING.index + 0.15 + i * STAGGER.tight,
-                    ease: EASE.out,
+                    delay: reduceMotion ? 0 : i * STAGGER.tight,
                   }}
                 >
                   <span className="font-mono text-[11px] tabular-nums text-faint">
@@ -376,35 +357,24 @@ export function Hero() {
               {/* Brand connection */}
               <motion.span
                 className="mt-2 font-mono text-[11px] tracking-wide text-faint"
-                initial={
-                  reduceMotion
-                    ? { opacity: 1 }
-                    : { opacity: 0 }
-                }
-                whileInView={{ opacity: 1 }}
-                viewport={{ once: false, amount: 0.35 }}
-                transition={{
-                  duration: reduceMotion ? 0 : DUR.base,
-                  delay: reduceMotion ? 0 : HERO_TIMING.connection,
-                  ease: EASE.out,
-                }}
+                variants={v.item}
               >
                 Builder behind Xevryn
               </motion.span>
             </motion.aside>
           </div>
-        </div>
+        </motion.div>
       </Container>
 
       {/* Bottom accent line — draws from left to right */}
       <motion.div
         className="absolute bottom-0 left-0 right-0 h-px bg-border-subtle"
-        initial={reduceMotion ? { scaleX: 1 } : { scaleX: 0 }}
-        whileInView={{ scaleX: 1 }}
+        variants={v.line}
+        initial="hidden"
+        whileInView="visible"
         viewport={{ once: false, amount: 0.5 }}
         transition={{
           duration: reduceMotion ? 0 : DUR.slow,
-          delay: reduceMotion ? 0 : HERO_TIMING.accent + 0.1,
           ease: EASE.out,
         }}
         style={{ transformOrigin: "left" }}

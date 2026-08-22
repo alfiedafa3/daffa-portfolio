@@ -396,7 +396,7 @@ export function Work() {
         </div>
 
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-[8_4] lg:gap-12 xl:grid-cols-[7_5]">
-          <div className="relative min-h-[420px] sm:min-h-[480px] lg:min-h-[560px] xl:min-h-[600px]">
+          <div className="relative min-h-[360px] sm:min-h-[420px] lg:min-h-[480px] xl:min-h-[520px]">
             <TwoOfUsVisual reduceMotion={reduceMotion} />
           </div>
 

@@ -12,7 +12,7 @@ export function Contact() {
   return (
     <section
       id="contact"
-      className="relative py-24 md:py-32 lg:py-40"
+      className="relative py-20 md:py-28 lg:py-32"
       aria-labelledby="contact-heading"
     >
       <div className="pointer-events-none absolute inset-0" aria-hidden="true">
