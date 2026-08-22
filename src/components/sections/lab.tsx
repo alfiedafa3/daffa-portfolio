@@ -47,39 +47,48 @@ export function Lab() {
   return (
     <section
       id="lab"
-      className="relative py-20 md:py-32 overflow-hidden"
+      className="relative py-20 md:py-28 lg:py-32 overflow-hidden"
       aria-labelledby="lab-heading"
     >
-      {/* Background — distinct from About and Work */}
       <div className="pointer-events-none absolute inset-0" aria-hidden="true">
-        {/* Asymmetric diagonal — different angle from About */}
         <div
-          className="absolute top-0 left-0 h-full w-full"
+          className="absolute top-0 right-0 h-full w-1/3"
           style={{
-            background:
-              "linear-gradient(160deg, transparent 55%, var(--bg-surface) 55%, var(--bg-surface) 55.4%, transparent 55.4%)",
-            opacity: 0.25,
+            background: "linear-gradient(135deg, transparent 0%, var(--accent-subtle) 100%)",
+            opacity: 0.3,
           }}
         />
-        {/* Radial teal accent */}
-        <div
-          className="absolute bottom-1/4 left-1/3 h-[400px] w-[400px] rounded-full opacity-[0.03]"
+        <motion.div
+          className="absolute bottom-1/4 left-1/4 h-[500px] w-[500px] rounded-full"
           style={{
             background:
               "radial-gradient(circle, var(--accent-primary), transparent 70%)",
+          }}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 0.05 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: reduceMotion ? 0 : DUR.slow, ease: EASE.gentle }}
+        />
+        <div
+          className="absolute top-[15%] right-[8%] h-px w-[30%]"
+          style={{
+            background: "linear-gradient(to left, var(--accent-primary), transparent)",
+            opacity: 0.12,
+          }}
+        />
+        <div
+          className="absolute bottom-[25%] left-[3%] h-px w-[20%]"
+          style={{
+            background: "linear-gradient(to right, var(--accent-primary), transparent)",
+            opacity: 0.08,
           }}
         />
       </div>
 
       <Container className="relative z-10">
-        {/* Section header */}
         <motion.div
           className="mb-12 md:mb-16"
-          initial={
-            reduceMotion
-              ? { opacity: 1, y: 0 }
-              : { opacity: 0, y: 16 }
-          }
+          initial={reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
           transition={{
@@ -89,22 +98,16 @@ export function Lab() {
         >
           <h2
             id="lab-heading"
-            className="font-mono text-[11px] uppercase tracking-[0.18em] text-muted-fg"
+            className="font-mono text-[10px] uppercase tracking-[0.2em] text-accent"
           >
             Lab
           </h2>
         </motion.div>
 
-        {/* Experiment areas — asymmetric spatial layout */}
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-12 md:gap-5">
-          {/* Lua / Roblox — primary anchor, largest */}
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-12 md:gap-6">
           <motion.div
             className="md:col-span-7 md:row-span-2"
-            initial={
-              reduceMotion
-                ? { opacity: 1, y: 0 }
-                : { opacity: 0, x: -24 }
-            }
+            initial={reduceMotion ? { opacity: 1, x: 0 } : { opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, amount: 0.2 }}
             transition={{
@@ -112,7 +115,7 @@ export function Lab() {
               ease: EASE.out,
             }}
           >
-            <div className="card-hover group relative rounded-xl bg-surface/40 p-6 md:p-8 h-full">
+            <div className="group relative rounded-xl bg-surface/50 p-6 md:p-8 h-full border border-accent/20 transition-all duration-300 hover:border-accent/40 hover:bg-surface/70">
               <div className="flex flex-col gap-4">
                 <div className="flex items-baseline gap-3">
                   <span className="font-display text-2xl font-bold tracking-tight text-accent md:text-3xl">
@@ -129,7 +132,7 @@ export function Lab() {
                   {EXPERIMENTS[0].tags.map((tag) => (
                     <span
                       key={tag}
-                      className="rounded-md bg-surface px-3 py-1 text-xs font-medium text-secondary"
+                      className="rounded-md bg-accent/10 px-3 py-1 text-xs font-medium text-accent"
                     >
                       {tag}
                     </span>
@@ -139,14 +142,9 @@ export function Lab() {
             </div>
           </motion.div>
 
-          {/* Web Foundations */}
           <motion.div
             className="md:col-span-5"
-            initial={
-              reduceMotion
-                ? { opacity: 1, y: 0 }
-                : { opacity: 0, y: 20 }
-            }
+            initial={reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.3 }}
             transition={{
@@ -155,7 +153,7 @@ export function Lab() {
               ease: EASE.out,
             }}
           >
-            <div className="card-hover group relative rounded-xl bg-surface/30 p-5 md:p-6 h-full">
+            <div className="group relative rounded-xl bg-surface/40 p-5 md:p-6 h-full border border-transparent transition-all duration-300 hover:border-accent/20 hover:bg-surface/60">
               <div className="flex flex-col gap-3">
                 <div className="flex items-baseline gap-3">
                   <span className="font-display text-lg font-semibold tracking-tight text-foreground">
@@ -172,7 +170,7 @@ export function Lab() {
                   {EXPERIMENTS[1].tags.map((tag) => (
                     <span
                       key={tag}
-                      className="rounded-md bg-surface/60 px-2.5 py-0.5 text-[11px] text-faint"
+                      className="rounded-md bg-surface/80 px-2.5 py-0.5 text-[11px] text-faint"
                     >
                       {tag}
                     </span>
@@ -182,14 +180,9 @@ export function Lab() {
             </div>
           </motion.div>
 
-          {/* AI / Systems */}
           <motion.div
             className="md:col-span-5"
-            initial={
-              reduceMotion
-                ? { opacity: 1, y: 0 }
-                : { opacity: 0, y: 16 }
-            }
+            initial={reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.3 }}
             transition={{
@@ -198,7 +191,7 @@ export function Lab() {
               ease: EASE.out,
             }}
           >
-            <div className="group relative rounded-xl bg-surface/30 p-5 md:p-6 transition-colors duration-300 hover:bg-surface/50 h-full">
+            <div className="group relative rounded-xl bg-surface/40 p-5 md:p-6 h-full border border-transparent transition-all duration-300 hover:border-accent/20 hover:bg-surface/60">
               <div className="flex flex-col gap-3">
                 <div className="flex items-baseline gap-3">
                   <span className="font-display text-lg font-semibold tracking-tight text-foreground">
@@ -215,7 +208,7 @@ export function Lab() {
                   {EXPERIMENTS[2].tags.map((tag) => (
                     <span
                       key={tag}
-                      className="rounded-md bg-surface/60 px-2.5 py-0.5 text-[11px] text-faint"
+                      className="rounded-md bg-surface/80 px-2.5 py-0.5 text-[11px] text-faint"
                     >
                       {tag}
                     </span>
@@ -225,14 +218,9 @@ export function Lab() {
             </div>
           </motion.div>
 
-          {/* Security Foundations — bottom span */}
           <motion.div
             className="md:col-span-12"
-            initial={
-              reduceMotion
-                ? { opacity: 1, x: 0 }
-                : { opacity: 0, x: 24 }
-            }
+            initial={reduceMotion ? { opacity: 1, x: 0 } : { opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, amount: 0.3 }}
             transition={{
@@ -241,7 +229,7 @@ export function Lab() {
               ease: EASE.out,
             }}
           >
-            <div className="card-hover group relative rounded-xl bg-surface/20 p-5 md:p-6">
+            <div className="group relative rounded-xl bg-surface/30 p-5 md:p-6 border border-transparent transition-all duration-300 hover:border-accent/15 hover:bg-surface/50">
               <div className="flex flex-col gap-3 md:flex-row md:items-start md:gap-8">
                 <div className="flex flex-col gap-2 md:min-w-[200px]">
                   <div className="flex items-baseline gap-3">
@@ -260,7 +248,7 @@ export function Lab() {
                   {EXPERIMENTS[3].tags.map((tag) => (
                     <span
                       key={tag}
-                      className="rounded-md bg-surface/60 px-2.5 py-0.5 text-[11px] text-faint"
+                      className="rounded-md bg-surface/80 px-2.5 py-0.5 text-[11px] text-faint"
                     >
                       {tag}
                     </span>
@@ -271,6 +259,19 @@ export function Lab() {
           </motion.div>
         </div>
       </Container>
+
+      <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-px" aria-hidden="true">
+        <motion.div
+          className="h-full w-full"
+          style={{
+            background: "linear-gradient(to right, transparent, var(--accent-primary), transparent)",
+          }}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 0.12 }}
+          viewport={{ once: true, amount: 0.5 }}
+          transition={{ duration: reduceMotion ? 0 : DUR.medium, ease: EASE.out }}
+        />
+      </div>
     </section>
   );
 }

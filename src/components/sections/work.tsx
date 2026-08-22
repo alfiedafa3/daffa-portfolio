@@ -1,10 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import {
-  motion,
-  useInView,
-} from "motion/react";
+import { motion, useInView } from "motion/react";
 import { PROJECTS } from "@/data/projects";
 import { Container } from "@/components/ui/container";
 import { EASE, DUR, STAGGER, useReducedMotionSafe } from "@/lib/motion";
@@ -16,20 +13,20 @@ function TwoOfUsVisual({ reduceMotion }: { reduceMotion: boolean }) {
   return (
     <div ref={maskRef} className="relative h-full w-full">
       <motion.div
-        className="absolute inset-0 overflow-hidden"
-        initial={reduceMotion ? { clipPath: "inset(0 0 0 0 round 0px)" } : { clipPath: "inset(8% 8% 8% 8% round 0px)" }}
+        className="absolute inset-0 overflow-hidden rounded-xl"
+        initial={reduceMotion ? { clipPath: "inset(0 0 0 0 round 12px)" } : { clipPath: "inset(10% 10% 10% 10% round 12px)" }}
         animate={
           reduceMotion
-            ? { clipPath: "inset(0 0 0 0 round 0px)" }
+            ? { clipPath: "inset(0 0 0 0 round 12px)" }
             : maskInView
-              ? { clipPath: "inset(0 0 0 0 round 0px)" }
+              ? { clipPath: "inset(0 0 0 0 round 12px)" }
               : undefined
         }
         transition={{ duration: reduceMotion ? 0 : DUR.slow, ease: EASE.gentle }}
       >
         <div className="absolute inset-0 bg-[#0c1322]">
           <div
-            className="absolute inset-0 opacity-[0.06]"
+            className="absolute inset-0 opacity-[0.05]"
             aria-hidden="true"
             style={{
               backgroundImage:
@@ -48,7 +45,7 @@ function TwoOfUsVisual({ reduceMotion }: { reduceMotion: boolean }) {
               className="absolute inset-x-0 top-0 h-px"
               style={{
                 background:
-                  "linear-gradient(90deg, transparent, rgba(251,113,133,0.25), transparent)",
+                  "linear-gradient(90deg, transparent, rgba(251,113,133,0.3), transparent)",
               }}
             />
 
@@ -66,7 +63,6 @@ function TwoOfUsVisual({ reduceMotion }: { reduceMotion: boolean }) {
                 >
                   TwoOfUs
                 </span>
-                <span className="text-[10px] text-rose-300/70">❤️</span>
               </div>
               <nav className="hidden items-center gap-4 sm:flex">
                 {["Dashboard", "Check-in", "Missions", "Reflection"].map(
@@ -100,7 +96,7 @@ function TwoOfUsVisual({ reduceMotion }: { reduceMotion: boolean }) {
                     initial={
                       reduceMotion
                         ? { opacity: 1, y: 0 }
-                        : { opacity: 0, y: 18 }
+                        : { opacity: 0, y: 20 }
                     }
                     animate={
                       reduceMotion
@@ -111,18 +107,18 @@ function TwoOfUsVisual({ reduceMotion }: { reduceMotion: boolean }) {
                     }
                     transition={{
                       duration: reduceMotion ? 0 : DUR.medium,
-                      delay: reduceMotion ? 0 : 0.25,
+                      delay: reduceMotion ? 0 : 0.3,
                       ease: EASE.out,
                     }}
                   >
-                    TwoOfUs ❤️
+                    TwoOfUs
                   </motion.h3>
                   <motion.p
                     className="mt-3 max-w-[280px] text-xs leading-relaxed text-slate-400 sm:max-w-xs sm:text-[13px]"
                     initial={
                       reduceMotion
                         ? { opacity: 1, y: 0 }
-                        : { opacity: 0, y: 14 }
+                        : { opacity: 0, y: 16 }
                     }
                     animate={
                       reduceMotion
@@ -133,7 +129,7 @@ function TwoOfUsVisual({ reduceMotion }: { reduceMotion: boolean }) {
                     }
                     transition={{
                       duration: reduceMotion ? 0 : DUR.medium,
-                      delay: reduceMotion ? 0 : 0.35,
+                      delay: reduceMotion ? 0 : 0.4,
                       ease: EASE.out,
                     }}
                   >
@@ -145,11 +141,7 @@ function TwoOfUsVisual({ reduceMotion }: { reduceMotion: boolean }) {
 
                 <motion.div
                   className="mt-7 grid grid-cols-3 gap-2 sm:gap-3"
-                  initial={
-                    reduceMotion
-                      ? { opacity: 1 }
-                      : { opacity: 0 }
-                  }
+                  initial={reduceMotion ? { opacity: 1 } : { opacity: 0 }}
                   animate={
                     reduceMotion
                       ? { opacity: 1 }
@@ -159,23 +151,14 @@ function TwoOfUsVisual({ reduceMotion }: { reduceMotion: boolean }) {
                   }
                   transition={{
                     duration: reduceMotion ? 0 : DUR.medium,
-                    delay: reduceMotion ? 0 : 0.4,
+                    delay: reduceMotion ? 0 : 0.5,
                     ease: EASE.out,
                   }}
                 >
                   {[
-                    {
-                      name: "Privacy",
-                      path: "M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z",
-                    },
-                    {
-                      name: "AI Guidance",
-                      path: "M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z",
-                    },
-                    {
-                      name: "Memory",
-                      path: "M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253",
-                    },
+                    { name: "Privacy", icon: "M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" },
+                    { name: "AI Guidance", icon: "M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" },
+                    { name: "Memory", icon: "M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" },
                   ].map((feature, i) => (
                     <motion.div
                       key={feature.name}
@@ -194,7 +177,7 @@ function TwoOfUsVisual({ reduceMotion }: { reduceMotion: boolean }) {
                       }
                       transition={{
                         duration: reduceMotion ? 0 : DUR.medium,
-                        delay: reduceMotion ? 0 : 0.45 + i * 0.07,
+                        delay: reduceMotion ? 0 : 0.55 + i * 0.08,
                         ease: EASE.out,
                       }}
                     >
@@ -209,7 +192,7 @@ function TwoOfUsVisual({ reduceMotion }: { reduceMotion: boolean }) {
                           <path
                             strokeLinecap="round"
                             strokeLinejoin="round"
-                            d={feature.path}
+                            d={feature.icon}
                           />
                         </svg>
                       </div>
@@ -222,11 +205,7 @@ function TwoOfUsVisual({ reduceMotion }: { reduceMotion: boolean }) {
 
                 <motion.div
                   className="mt-5 flex items-center justify-center gap-2 sm:mt-6 sm:gap-3"
-                  initial={
-                    reduceMotion
-                      ? { opacity: 1, y: 0 }
-                      : { opacity: 0, y: 12 }
-                  }
+                  initial={reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
                   animate={
                     reduceMotion
                       ? { opacity: 1, y: 0 }
@@ -236,7 +215,7 @@ function TwoOfUsVisual({ reduceMotion }: { reduceMotion: boolean }) {
                   }
                   transition={{
                     duration: reduceMotion ? 0 : DUR.medium,
-                    delay: reduceMotion ? 0 : 0.65,
+                    delay: reduceMotion ? 0 : 0.7,
                     ease: EASE.out,
                   }}
                 >
@@ -258,7 +237,7 @@ function TwoOfUsVisual({ reduceMotion }: { reduceMotion: boolean }) {
                 className="h-px w-2/3"
                 style={{
                   background:
-                    "linear-gradient(90deg, transparent, rgba(251,113,133,0.35), transparent)",
+                    "linear-gradient(90deg, transparent, rgba(251,113,133,0.4), transparent)",
                 }}
               />
             </footer>
@@ -268,11 +247,11 @@ function TwoOfUsVisual({ reduceMotion }: { reduceMotion: boolean }) {
 
       <span
         aria-hidden="true"
-        className="pointer-events-none absolute -right-3 -top-3 h-12 w-12 border-r border-t border-accent/30 sm:-right-5 sm:-top-5"
+        className="pointer-events-none absolute -right-4 -top-4 h-16 w-16 border-r-2 border-t-2 border-accent/40 sm:-right-6 sm:-top-6"
       />
       <span
         aria-hidden="true"
-        className="pointer-events-none absolute -bottom-3 -left-3 h-12 w-12 border-b border-l border-accent/30 sm:-bottom-5 sm:-left-5"
+        className="pointer-events-none absolute -bottom-4 -left-4 h-16 w-16 border-b-2 border-l-2 border-accent/40 sm:-bottom-6 sm:-left-6"
       />
     </div>
   );
@@ -284,15 +263,14 @@ function LiveCta({ url, reduceMotion }: { url: string; reduceMotion: boolean }) 
       href={url}
       target="_blank"
       rel="noopener noreferrer"
-      className="group relative inline-flex items-center gap-2 py-1 text-sm font-medium text-accent"
+      className="group relative inline-flex items-center gap-2 py-1 text-sm font-medium text-accent transition-colors hover:text-accent-hover"
       initial={reduceMotion ? { opacity: 1 } : { opacity: 0 }}
       whileInView={{ opacity: 1 }}
       viewport={{ once: true, amount: 0.5 }}
-      whileHover={reduceMotion ? undefined : { x: 2 }}
+      whileHover={reduceMotion ? undefined : { x: 3 }}
       whileTap={reduceMotion ? undefined : { scale: 0.98 }}
       transition={{
         duration: reduceMotion ? 0 : DUR.base,
-        delay: reduceMotion ? 0 : STAGGER.normal * 6,
         ease: EASE.out,
       }}
     >
@@ -305,7 +283,7 @@ function LiveCta({ url, reduceMotion }: { url: string; reduceMotion: boolean }) 
       </span>
       <span
         aria-hidden="true"
-        className="relative inline-flex h-6 w-6 items-center justify-center rounded-full border border-accent/40 transition-[transform,background-color] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-1 group-hover:bg-accent/10"
+        className="relative inline-flex h-6 w-6 items-center justify-center rounded-full border border-accent/40 transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-1 group-hover:bg-accent/10 group-hover:border-accent"
       >
         <svg
           className="h-3 w-3"
@@ -317,7 +295,7 @@ function LiveCta({ url, reduceMotion }: { url: string; reduceMotion: boolean }) 
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
-            d="M5 12h14M13 5l7 7-7 7"
+            d="M17 8l4 4m0 0l-4 4m4-4H3"
           />
         </svg>
       </span>
@@ -339,31 +317,33 @@ export function Work() {
     >
       <div className="pointer-events-none absolute inset-0" aria-hidden="true">
         <div
-          className="absolute inset-0 opacity-[0.025]"
+          className="absolute inset-0 opacity-[0.02]"
           style={{
             backgroundImage: `linear-gradient(var(--fg-primary) 1px, transparent 1px),
                              linear-gradient(90deg, var(--fg-primary) 1px, transparent 1px)`,
-            backgroundSize: "80px 80px",
+            backgroundSize: "96px 96px",
             maskImage:
-              "linear-gradient(to bottom, transparent 5%, black 25%, black 75%, transparent 95%)",
+              "linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%)",
             WebkitMaskImage:
-              "linear-gradient(to bottom, transparent 5%, black 25%, black 75%, transparent 95%)",
+              "linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%)",
           }}
         />
-        <div
-          className="absolute right-[8%] top-0 h-full w-px opacity-[0.06]"
+        <motion.div
+          className="absolute right-[10%] top-0 h-full w-px"
           style={{
             background:
               "linear-gradient(to bottom, transparent, var(--accent-primary) 30%, var(--accent-primary) 70%, transparent)",
-            transform: "rotate(8deg)",
-            transformOrigin: "top center",
           }}
+          initial={{ opacity: 0, scaleY: 0 }}
+          whileInView={{ opacity: 0.08, scaleY: 1 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: reduceMotion ? 0 : DUR.slow, delay: 0.2, ease: EASE.gentle }}
         />
         <div
-          className="absolute bottom-[18%] left-[5%] h-px w-[40%] opacity-[0.05]"
+          className="absolute bottom-[20%] left-[3%] h-px w-[35%]"
           style={{
-            background:
-              "linear-gradient(to right, transparent, var(--fg-primary), transparent)",
+            background: "linear-gradient(to right, var(--accent-primary), transparent)",
+            opacity: 0.06,
           }}
         />
       </div>
@@ -371,9 +351,7 @@ export function Work() {
       <Container className="relative z-10">
         <div ref={headerRef} className="mb-10 md:mb-12">
           <motion.div
-            initial={
-              reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 14 }
-            }
+            initial={reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
             animate={
               reduceMotion
                 ? { opacity: 1, y: 0 }
@@ -388,14 +366,14 @@ export function Work() {
           >
             <h2
               id="work-heading"
-              className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted-fg"
+              className="font-mono text-[10px] uppercase tracking-[0.2em] text-accent"
             >
               Selected Work
             </h2>
           </motion.div>
         </div>
 
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-[8_4] lg:gap-12 xl:grid-cols-[7_5]">
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-[8_4] lg:gap-14 xl:grid-cols-[7_5]">
           <div className="relative min-h-[360px] sm:min-h-[420px] lg:min-h-[480px] xl:min-h-[520px]">
             <TwoOfUsVisual reduceMotion={reduceMotion} />
           </div>
@@ -403,38 +381,34 @@ export function Work() {
           <div className="flex flex-col gap-6 lg:justify-center">
             <motion.div
               className="flex flex-col gap-3"
-              initial={
-                reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }
-              }
+              initial={reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.3 }}
               transition={{
                 duration: reduceMotion ? 0 : DUR.medium,
-                delay: reduceMotion ? 0 : STAGGER.normal,
+                delay: reduceMotion ? 0 : 0.15,
                 ease: EASE.out,
               }}
             >
-              <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-accent">
+              <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-fg">
                 Featured Case Study
               </p>
               <h3 className="font-display text-3xl font-bold leading-[1.05] tracking-tight text-foreground sm:text-4xl lg:text-5xl">
                 {featured.name}
               </h3>
-              <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-muted-fg">
+              <p className="text-sm text-accent font-medium">
                 {featured.tagline}
               </p>
             </motion.div>
 
             <motion.p
               className="text-base leading-relaxed text-secondary md:text-[17px] md:leading-[1.65]"
-              initial={
-                reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }
-              }
+              initial={reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.3 }}
               transition={{
                 duration: reduceMotion ? 0 : DUR.medium,
-                delay: reduceMotion ? 0 : STAGGER.normal * 2,
+                delay: reduceMotion ? 0 : 0.25,
                 ease: EASE.out,
               }}
             >
@@ -443,18 +417,16 @@ export function Work() {
 
             <motion.div
               className="flex flex-col gap-1.5"
-              initial={
-                reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }
-              }
+              initial={reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 14 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.4 }}
               transition={{
                 duration: reduceMotion ? 0 : DUR.base,
-                delay: reduceMotion ? 0 : STAGGER.normal * 3,
+                delay: reduceMotion ? 0 : 0.35,
                 ease: EASE.out,
               }}
             >
-              <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-faint">
+              <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-faint">
                 Role
               </span>
               <span className="text-sm leading-relaxed text-secondary">
@@ -464,25 +436,23 @@ export function Work() {
 
             <motion.div
               className="flex flex-col gap-3"
-              initial={
-                reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }
-              }
+              initial={reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 14 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.4 }}
               transition={{
                 duration: reduceMotion ? 0 : DUR.base,
-                delay: reduceMotion ? 0 : STAGGER.normal * 4,
+                delay: reduceMotion ? 0 : 0.45,
                 ease: EASE.out,
               }}
             >
-              <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-faint">
+              <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-faint">
                 Technology
               </span>
               <div className="flex flex-wrap gap-2">
                 {featured.stack.map((tech) => (
                   <span
                     key={tech}
-                    className="rounded-md border border-border-subtle bg-surface/60 px-3 py-1 text-xs font-medium text-foreground"
+                    className="rounded-md border border-accent/20 bg-accent/5 px-3 py-1 text-xs font-medium text-accent"
                   >
                     {tech}
                   </span>
@@ -504,21 +474,19 @@ export function Work() {
 
             <motion.div
               className="pt-2"
-              initial={
-                reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }
-              }
+              initial={reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.4 }}
               transition={{
                 duration: reduceMotion ? 0 : DUR.base,
-                delay: reduceMotion ? 0 : STAGGER.normal * 5,
+                delay: reduceMotion ? 0 : 0.55,
                 ease: EASE.out,
               }}
             >
               {featured.liveUrl ? (
                 <LiveCta url={featured.liveUrl} reduceMotion={reduceMotion} />
               ) : (
-                <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-faint">
+                <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-faint">
                   Private Build
                 </span>
               )}

@@ -31,15 +31,12 @@ export function Hero() {
   const sectionRef = useRef<HTMLElement>(null);
   const headlineRef = useRef<HTMLDivElement>(null);
 
-  // Pointer tracking (desktop only, via motion values — no React state)
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
-  // Smooth pointer values for depth layers
   const smoothX = useSpring(mouseX, { stiffness: 50, damping: 30 });
   const smoothY = useSpring(mouseY, { stiffness: 50, damping: 30 });
 
-  // Transform pointer to depth layers (raw pointer values)
   const gridX = useTransform(smoothX, (v) => v * POINTER_DEPTH.grid);
   const gridY = useTransform(smoothY, (v) => v * POINTER_DEPTH.grid);
   const geoX = useTransform(smoothX, (v) => v * POINTER_DEPTH.geometry);
@@ -47,11 +44,9 @@ export function Hero() {
   const radialX = useTransform(smoothX, (v) => v * POINTER_DEPTH.radial);
   const radialYRaw = useTransform(smoothY, (v) => v * POINTER_DEPTH.radial);
 
-  // Headline pointer tracking (subtle displacement)
   const headlineTrackX = useTransform(smoothX, (v) => v * 2);
   const headlineTrackY = useTransform(smoothY, (v) => v * 1.5);
 
-  // Scroll parallax
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start start", "end start"],
@@ -73,20 +68,16 @@ export function Hero() {
     [0, -PARALLAX.radial]
   );
 
-  // Combine pointer + parallax via template strings
   const headlineX = useMotionTemplate`${headlineTrackX}px`;
   const headlineY = useMotionTemplate`calc(${headlineTrackY}px + ${headlineParallax}px)`;
   const geoY = useMotionTemplate`calc(${geoYRaw}px + ${geometryParallax}px)`;
   const radialY = useMotionTemplate`calc(${radialYRaw}px + ${radialParallax}px)`;
 
-  // Pointer handler (desktop only)
   const handlePointerMove = (e: React.PointerEvent) => {
     if (reduceMotion) return;
-    // Only respond to mouse-like devices (not touch)
     if (e.pointerType === "touch") return;
     const rect = sectionRef.current?.getBoundingClientRect();
     if (!rect) return;
-    // Normalize to -1..1 centered on viewport center
     const nx = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
     const ny = ((e.clientY - rect.top) / rect.height - 0.5) * 2;
     mouseX.set(nx);
@@ -96,41 +87,38 @@ export function Hero() {
   const name = "DAFFA ALFIE";
   const words = name.split(" ");
 
-  // Single parent viewport trigger drives the entire choreography.
-  // Children stagger from this shared state — no independent per-word observers.
   const containerVariants = {
     hidden: {},
     visible: {
       transition: {
-        staggerChildren: 0.07,
-        delayChildren: 0.05,
+        staggerChildren: 0.08,
+        delayChildren: 0.1,
       },
     },
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 14 },
+    hidden: { opacity: 0, y: 16 },
     visible: { opacity: 1, y: 0 },
   };
 
   const headlineWordVariants = {
-    hidden: { y: "110%" },
-    visible: { y: 0 },
+    hidden: { y: "110%", opacity: 0 },
+    visible: { y: 0, opacity: 1 },
   };
 
   const lineVariants = {
-    hidden: { scaleX: 0 },
-    visible: { scaleX: 1 },
+    hidden: { scaleX: 0, opacity: 0 },
+    visible: { scaleX: 1, opacity: 1 },
   };
 
-  // For reduced motion, hidden === visible (no animation, immediately shown)
   const rmVariants = {
     hidden: {},
     visible: {},
   };
   const rmItem = { hidden: { opacity: 1, y: 0 }, visible: { opacity: 1, y: 0 } };
-  const rmWord = { hidden: { y: 0 }, visible: { y: 0 } };
-  const rmLine = { hidden: { scaleX: 1 }, visible: { scaleX: 1 } };
+  const rmWord = { hidden: { y: 0, opacity: 1 }, visible: { y: 0, opacity: 1 } };
+  const rmLine = { hidden: { scaleX: 1, opacity: 1 }, visible: { scaleX: 1, opacity: 1 } };
 
   const v = reduceMotion
     ? { container: rmVariants, item: rmItem, word: rmWord, line: rmLine }
@@ -139,113 +127,132 @@ export function Hero() {
   return (
     <section
       ref={sectionRef}
-      className="relative flex min-h-[40dvh] flex-col justify-center overflow-hidden py-24 md:py-32"
+      className="relative flex min-h-[50dvh] flex-col justify-center overflow-hidden py-20 md:py-28 lg:py-32"
       aria-labelledby="hero-heading"
       onPointerMove={handlePointerMove}
     >
-      {/* Background depth — grid + XEVRYN geometry + radial illumination */}
-      <div
-        className="pointer-events-none absolute inset-0"
-        aria-hidden="true"
-      >
-        {/* Grid — fades toward bottom, responds to pointer */}
+      <div className="pointer-events-none absolute inset-0" aria-hidden="true">
         <motion.div
-          className="absolute inset-0 opacity-[0.03]"
+          className="absolute inset-0 opacity-[0.025]"
           style={{
             backgroundImage: `linear-gradient(var(--fg-primary) 1px, transparent 1px),
                              linear-gradient(90deg, var(--fg-primary) 1px, transparent 1px)`,
-            backgroundSize: "80px 80px",
+            backgroundSize: "64px 64px",
             maskImage:
-              "linear-gradient(to bottom, black 60%, transparent 100%)",
+              "linear-gradient(to bottom, black 50%, transparent 100%)",
             WebkitMaskImage:
-              "linear-gradient(to bottom, black 60%, transparent 100%)",
+              "linear-gradient(to bottom, black 50%, transparent 100%)",
             x: reduceMotion ? 0 : gridX,
             y: reduceMotion ? 0 : gridY,
           }}
         />
 
-        {/* XEVRYN structural intersection — the dominant geometry */}
         <motion.div
           className="absolute inset-0"
           style={{
             x: motionMounted && !reduceMotion ? geoX : 0,
             y: motionMounted && !reduceMotion ? geoY : 0,
           }}
-          variants={v.line}
-          initial="hidden"
-          whileInView="visible"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
           viewport={{ once: false, amount: 0.4 }}
           transition={{
             duration: reduceMotion ? 0 : DUR.medium,
             ease: EASE.gentle,
           }}
         >
-          {/* Primary diagonal — top-left to bottom-right */}
-          <div
-            className="absolute h-full w-px opacity-[0.08]"
+          <motion.div
+            className="absolute h-full w-px"
             style={{
-              left: "60%",
-              transform: "rotate(12deg)",
+              left: "55%",
+              transform: "rotate(15deg)",
               transformOrigin: "top center",
               background:
-                "linear-gradient(to bottom, transparent 5%, var(--accent-primary) 40%, var(--accent-primary) 60%, transparent 95%)",
+                "linear-gradient(to bottom, transparent 0%, var(--accent-primary) 30%, var(--accent-primary) 70%, transparent 100%)",
+            }}
+            initial={{ opacity: 0, scaleY: 0 }}
+            whileInView={{ opacity: 0.15, scaleY: 1 }}
+            viewport={{ once: false, amount: 0.4 }}
+            transition={{
+              duration: reduceMotion ? 0 : DUR.slow,
+              delay: 0.2,
+              ease: EASE.gentle,
             }}
           />
-          {/* Secondary diagonal — crossing line */}
-          <div
-            className="absolute h-full w-px opacity-[0.05]"
+          <motion.div
+            className="absolute h-full w-px"
             style={{
-              left: "65%",
-              transform: "rotate(-8deg)",
+              left: "62%",
+              transform: "rotate(-10deg)",
               transformOrigin: "top center",
               background:
-                "linear-gradient(to bottom, transparent 10%, var(--fg-primary) 35%, var(--fg-primary) 55%, transparent 90%)",
+                "linear-gradient(to bottom, transparent 5%, var(--fg-primary) 35%, var(--fg-primary) 65%, transparent 95%)",
+            }}
+            initial={{ opacity: 0, scaleY: 0 }}
+            whileInView={{ opacity: 0.06, scaleY: 1 }}
+            viewport={{ once: false, amount: 0.4 }}
+            transition={{
+              duration: reduceMotion ? 0 : DUR.slow,
+              delay: 0.35,
+              ease: EASE.gentle,
             }}
           />
-          {/* Horizontal structural guide */}
-          <div
-            className="absolute left-[10%] right-[10%] h-px opacity-[0.04]"
+          <motion.div
+            className="absolute left-[5%] right-[5%] h-px"
             style={{
-              top: "70%",
+              top: "72%",
               background:
                 "linear-gradient(to right, transparent, var(--fg-primary), transparent)",
+            }}
+            initial={{ opacity: 0, scaleX: 0 }}
+            whileInView={{ opacity: 0.04, scaleX: 1 }}
+            viewport={{ once: false, amount: 0.4 }}
+            transition={{
+              duration: reduceMotion ? 0 : DUR.medium,
+              delay: 0.5,
+              ease: EASE.out,
             }}
           />
         </motion.div>
 
-        {/* Radial illumination — responds to pointer */}
         <motion.div
-          className="absolute h-[500px] w-[500px] rounded-full opacity-[0.03]"
+          className="absolute h-[600px] w-[600px] rounded-full"
           style={{
-            top: "20%",
-            left: "30%",
+            top: "15%",
+            left: "25%",
             background:
               "radial-gradient(circle, var(--accent-primary), transparent 70%)",
             x: reduceMotion ? 0 : radialX,
             y: reduceMotion ? 0 : radialY,
+          }}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 0.04 }}
+          viewport={{ once: false, amount: 0.4 }}
+          transition={{
+            duration: reduceMotion ? 0 : DUR.slow,
+            delay: 0.1,
+            ease: EASE.gentle,
           }}
         />
       </div>
 
       <Container className="relative z-10">
         <motion.div
-          className="flex flex-col gap-12 lg:gap-16"
+          className="flex flex-col gap-10 lg:gap-14"
           variants={v.container}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: false, amount: 0.4 }}
         >
-          {/* Eyebrow — appears quickly and quietly */}
           <motion.div variants={v.item}>
-            <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-muted-fg">
+            <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-fg">
               Technology Builder
             </span>
           </motion.div>
 
-          {/* Main Headline — clip-path masked reveal */}
           <motion.div
             ref={headlineRef}
-            className="flex flex-col gap-2"
+            className="flex flex-col gap-3"
             style={{
               x: motionMounted && !reduceMotion ? headlineX : 0,
               y: motionMounted && !reduceMotion ? headlineY : 0,
@@ -253,7 +260,7 @@ export function Hero() {
           >
             <h1
               id="hero-heading"
-              className="text-5xl font-semibold leading-[0.95] tracking-tight text-foreground sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl"
+              className="text-5xl font-bold leading-[0.95] tracking-tight text-foreground sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl"
             >
               {words.map((word, i) => (
                 <span key={word} className="block overflow-hidden">
@@ -262,7 +269,7 @@ export function Hero() {
                     variants={v.word}
                     transition={{
                       duration: reduceMotion ? 0 : DUR.cinematic,
-                      delay: reduceMotion ? 0 : i * 0.08,
+                      delay: reduceMotion ? 0 : 0.15 + i * 0.1,
                       ease: EASE.gentle,
                     }}
                   >
@@ -272,22 +279,21 @@ export function Hero() {
               ))}
             </h1>
 
-            {/* Accent line — draws from left to right */}
             <motion.div
-              className="mt-4 h-px bg-accent"
+              className="mt-5 h-[2px] w-24 bg-accent"
               variants={v.line}
               transition={{
                 duration: reduceMotion ? 0 : DUR.draw,
+                delay: reduceMotion ? 0 : 0.45,
                 ease: EASE.draw,
               }}
               style={{ transformOrigin: "left" }}
             />
           </motion.div>
 
-          {/* Supporting copy + CTAs + Discipline Index */}
           <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
             <motion.div
-              className="flex flex-col gap-6 max-w-lg"
+              className="flex flex-col gap-5 max-w-lg"
               variants={v.item}
             >
               <p className="text-base leading-relaxed text-secondary md:text-lg">
@@ -295,35 +301,34 @@ export function Hero() {
                 Cybersecurity, software engineering, AI.
               </p>
 
-              {/* CTAs */}
               <div className="flex flex-wrap items-center gap-4">
                 <motion.a
                   href="#work"
-                  className="btn-primary group inline-flex items-center justify-center gap-2 rounded-lg bg-accent px-6 py-3 text-sm font-medium text-accent-foreground active:scale-[0.98]"
-                  whileHover={
-                    reduceMotion ? undefined : { scale: 1.02 }
-                  }
-                  whileTap={reduceMotion ? undefined : { scale: 0.97 }}
+                  className="group relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-lg bg-accent px-6 py-3 text-sm font-medium text-accent-foreground"
+                  whileHover={reduceMotion ? undefined : { scale: 1.02 }}
+                  whileTap={reduceMotion ? undefined : { scale: 0.98 }}
                   transition={{ duration: DUR.fast, ease: EASE.snap }}
                 >
-                  Explore Work
-                  <motion.span
-                    className="inline-block"
-                    whileHover={reduceMotion ? undefined : { x: 3 }}
-                    transition={{ duration: DUR.fast, ease: EASE.snap }}
-                  >
-                    →
-                  </motion.span>
+                  <span className="relative z-10 flex items-center gap-2">
+                    Explore Work
+                    <motion.span
+                      className="inline-block"
+                      whileHover={reduceMotion ? undefined : { x: 4 }}
+                      transition={{ duration: DUR.fast, ease: EASE.snap }}
+                    >
+                      <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                      </svg>
+                    </motion.span>
+                  </span>
                 </motion.a>
                 <motion.a
                   href={`https://github.com/${SITE.github}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="nav-link inline-flex items-center justify-center rounded-lg border border-border-default px-6 py-3 text-sm font-medium text-foreground transition-colors hover:bg-surface active:scale-[0.98]"
-                  whileHover={
-                    reduceMotion ? undefined : { scale: 1.02 }
-                  }
-                  whileTap={reduceMotion ? undefined : { scale: 0.97 }}
+                  className="nav-link inline-flex items-center justify-center rounded-lg border border-border-default px-6 py-3 text-sm font-medium text-foreground transition-all duration-300 hover:border-accent hover:text-accent"
+                  whileHover={reduceMotion ? undefined : { scale: 1.02 }}
+                  whileTap={reduceMotion ? undefined : { scale: 0.98 }}
                   transition={{ duration: DUR.fast, ease: EASE.snap }}
                 >
                   GitHub
@@ -331,7 +336,6 @@ export function Hero() {
               </div>
             </motion.div>
 
-            {/* Discipline Index — structural counterweight */}
             <motion.aside
               className="hidden flex-col gap-3 lg:flex lg:min-w-[200px]"
               variants={v.item}
@@ -343,10 +347,10 @@ export function Hero() {
                   className="flex items-baseline gap-3"
                   variants={v.item}
                   transition={{
-                    delay: reduceMotion ? 0 : i * STAGGER.tight,
+                    delay: reduceMotion ? 0 : 0.6 + i * STAGGER.tight,
                   }}
                 >
-                  <span className="font-mono text-[11px] tabular-nums text-faint">
+                  <span className="font-mono text-[11px] tabular-nums text-accent">
                     {String(i + 1).padStart(2, "0")}
                   </span>
                   <span className="text-sm font-medium tracking-wide text-muted-fg">
@@ -354,10 +358,10 @@ export function Hero() {
                   </span>
                 </motion.div>
               ))}
-              {/* Brand connection */}
               <motion.span
                 className="mt-2 font-mono text-[11px] tracking-wide text-faint"
                 variants={v.item}
+                transition={{ delay: reduceMotion ? 0 : 0.8 }}
               >
                 Builder behind Xevryn
               </motion.span>
@@ -366,18 +370,19 @@ export function Hero() {
         </motion.div>
       </Container>
 
-      {/* Bottom accent line — draws from left to right */}
       <motion.div
-        className="absolute bottom-0 left-0 right-0 h-px bg-border-subtle"
-        variants={v.line}
-        initial="hidden"
-        whileInView="visible"
+        className="absolute bottom-0 left-0 right-0 h-px"
+        style={{
+          background: "linear-gradient(to right, transparent, var(--accent-primary), transparent)",
+        }}
+        initial={{ opacity: 0, scaleX: 0 }}
+        whileInView={{ opacity: 0.2, scaleX: 1 }}
         viewport={{ once: false, amount: 0.5 }}
         transition={{
           duration: reduceMotion ? 0 : DUR.slow,
+          delay: 0.3,
           ease: EASE.out,
         }}
-        style={{ transformOrigin: "left" }}
         aria-hidden="true"
       />
     </section>

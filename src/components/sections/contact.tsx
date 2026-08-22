@@ -16,30 +16,39 @@ export function Contact() {
       aria-labelledby="contact-heading"
     >
       <div className="pointer-events-none absolute inset-0" aria-hidden="true">
-        <div
-          className="absolute left-1/2 top-0 h-px w-1/2 -translate-x-1/2 opacity-[0.06]"
+        <motion.div
+          className="absolute left-1/2 top-0 h-px w-2/3 -translate-x-1/2"
           style={{
-            background:
-              "linear-gradient(90deg, transparent, var(--fg-primary), transparent)",
+            background: "linear-gradient(90deg, transparent, var(--accent-primary), transparent)",
+          }}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 0.2 }}
+          viewport={{ once: true, amount: 0.5 }}
+          transition={{ duration: reduceMotion ? 0 : DUR.medium, ease: EASE.out }}
+        />
+        <div
+          className="absolute right-[15%] top-[20%] hidden h-20 w-px lg:block"
+          style={{
+            background: "linear-gradient(to bottom, transparent, var(--accent-primary), transparent)",
+            opacity: 0.1,
           }}
         />
         <div
-          className="absolute right-[12%] top-[18%] hidden h-24 w-px opacity-[0.06] lg:block"
+          className="absolute bottom-[25%] left-[10%] hidden h-20 w-px lg:block"
           style={{
-            background:
-              "linear-gradient(to bottom, transparent, var(--accent-primary), transparent)",
-            transform: "rotate(8deg)",
-            transformOrigin: "top center",
+            background: "linear-gradient(to bottom, transparent, var(--accent-primary), transparent)",
+            opacity: 0.08,
           }}
         />
-        <div
-          className="absolute bottom-[22%] left-[8%] hidden h-24 w-px opacity-[0.04] lg:block"
+        <motion.div
+          className="absolute top-1/2 left-1/2 h-[600px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full"
           style={{
-            background:
-              "linear-gradient(to bottom, transparent, var(--fg-primary), transparent)",
-            transform: "rotate(-6deg)",
-            transformOrigin: "bottom center",
+            background: "radial-gradient(circle, var(--accent-primary), transparent 70%)",
           }}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 0.03 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: reduceMotion ? 0 : DUR.slow, ease: EASE.gentle }}
         />
       </div>
 
@@ -47,9 +56,7 @@ export function Contact() {
         <div className="flex flex-col items-center gap-10 text-center">
           <motion.div
             className="flex flex-col items-center gap-6"
-            initial={
-              reduceMotion ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.96 }
-            }
+            initial={reduceMotion ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.98 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true, amount: 0.3 }}
             transition={{
@@ -57,7 +64,7 @@ export function Contact() {
               ease: EASE.gentle,
             }}
           >
-            <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted-fg">
+            <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-accent">
               Contact
             </span>
             <h2
@@ -73,9 +80,7 @@ export function Contact() {
 
           {primary && (
             <motion.div
-              initial={
-                reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }
-              }
+              initial={reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.3 }}
               transition={{
@@ -88,12 +93,12 @@ export function Contact() {
                 href={primary.href}
                 target={primary.external ? "_blank" : undefined}
                 rel={primary.external ? "noopener noreferrer" : undefined}
-                className="btn-primary group inline-flex items-center gap-3 rounded-full border border-border-default px-7 py-3.5 text-sm font-medium text-foreground hover:border-accent hover:text-accent"
+                className="group relative inline-flex items-center gap-3 overflow-hidden rounded-full border-2 border-accent px-8 py-4 text-sm font-medium text-accent transition-all duration-300 hover:bg-accent hover:text-accent-foreground"
               >
-                <span>{primary.label}</span>
+                <span className="relative z-10">{primary.label}</span>
                 <span
                   aria-hidden="true"
-                  className="inline-flex h-6 w-6 items-center justify-center rounded-full border border-border-subtle transition-[transform,border-color,background-color] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-0.5 group-hover:border-accent group-hover:bg-accent/10"
+                  className="relative z-10 inline-flex h-6 w-6 items-center justify-center rounded-full border border-accent/60 transition-all duration-300 group-hover:translate-x-1 group-hover:border-accent-foreground/40 group-hover:bg-accent-foreground/10"
                 >
                   <svg
                     className="h-3 w-3"
@@ -105,7 +110,7 @@ export function Contact() {
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
-                      d="M5 12h14M13 5l7 7-7 7"
+                      d="M17 8l4 4m0 0l-4 4m4-4H3"
                     />
                   </svg>
                 </span>

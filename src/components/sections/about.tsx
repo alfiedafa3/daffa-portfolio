@@ -15,54 +15,45 @@ export function About() {
   const getGroupOpacity = (label: CapabilityGroupLabel) => {
     if (hoveredGroup === null) return 1;
     if (hoveredGroup === label) return 1;
-    return 0.5;
-  };
-
-  const getGroupScale = (label: CapabilityGroupLabel) => {
-    if (hoveredGroup === null) return 1;
-    if (hoveredGroup === label) return 1.01;
-    return 0.99;
+    return 0.4;
   };
 
   return (
     <section
       id="about"
-      className="relative py-20 md:py-32 overflow-hidden"
+      className="relative py-20 md:py-28 lg:py-32 overflow-hidden"
       aria-labelledby="about-heading"
     >
-      {/* Background — XEVRYN intersection geometry */}
       <div className="pointer-events-none absolute inset-0" aria-hidden="true">
-        {/* Primary diagonal cut */}
-        <div
-          className="absolute top-0 left-0 h-full w-full"
+        <motion.div
+          className="absolute top-0 right-0 h-full w-1/2"
           style={{
             background:
-              "linear-gradient(135deg, transparent 40%, var(--bg-surface) 40%, var(--bg-surface) 40.5%, transparent 40.5%)",
-            opacity: 0.3,
+              "linear-gradient(135deg, transparent 0%, var(--accent-subtle) 50%, transparent 100%)",
+          }}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 0.5 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: reduceMotion ? 0 : DUR.slow, ease: EASE.gentle }}
+        />
+        <div
+          className="absolute top-[20%] left-[10%] h-px w-[30%]"
+          style={{
+            background: "linear-gradient(to right, var(--accent-primary), transparent)",
+            opacity: 0.1,
           }}
         />
-        {/* Secondary diagonal — creates intersection */}
         <div
-          className="absolute top-0 left-0 h-full w-full"
+          className="absolute bottom-[30%] right-[5%] h-px w-[25%]"
           style={{
-            background:
-              "linear-gradient(-135deg, transparent 65%, var(--accent-subtle) 65%, var(--accent-subtle) 65.3%, transparent 65.3%)",
-            opacity: 0.4,
-          }}
-        />
-        {/* Radial depth */}
-        <div
-          className="absolute top-1/3 right-1/4 h-[500px] w-[500px] rounded-full opacity-[0.04]"
-          style={{
-            background:
-              "radial-gradient(circle, var(--accent-primary), transparent 70%)",
+            background: "linear-gradient(to left, var(--accent-primary), transparent)",
+            opacity: 0.08,
           }}
         />
       </div>
 
       <Container className="relative z-10">
-        {/* Editorial statement — masked reveal */}
-        <div className="mb-12 md:mb-16">
+        <div className="mb-16 md:mb-20">
           <h2
             id="about-heading"
             className="font-display text-5xl font-bold leading-[0.9] tracking-tight text-foreground sm:text-6xl md:text-7xl lg:text-8xl"
@@ -70,16 +61,12 @@ export function About() {
             <span className="block overflow-hidden">
               <motion.span
                 className="block"
-                initial={
-                  reduceMotion
-                    ? { opacity: 1, y: 0 }
-                    : { opacity: 0, y: 40 }
-                }
+                initial={reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.4 }}
                 transition={{
                   duration: reduceMotion ? 0 : DUR.cinematic,
-                  ease: EASE.out,
+                  ease: EASE.gentle,
                 }}
               >
                 {ABOUT.statement.line1}
@@ -88,17 +75,13 @@ export function About() {
             <span className="block overflow-hidden">
               <motion.span
                 className="block text-accent"
-                initial={
-                  reduceMotion
-                    ? { opacity: 1, y: 0 }
-                    : { opacity: 0, y: 40 }
-                }
+                initial={reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.4 }}
                 transition={{
                   duration: reduceMotion ? 0 : DUR.cinematic,
-                  delay: reduceMotion ? 0 : STAGGER.loose,
-                  ease: EASE.out,
+                  delay: reduceMotion ? 0 : 0.15,
+                  ease: EASE.gentle,
                 }}
               >
                 {ABOUT.statement.line2}
@@ -107,21 +90,15 @@ export function About() {
           </h2>
         </div>
 
-        {/* Narrative + identity — staggered reveal */}
-        <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1fr_280px] lg:gap-16 mb-12 md:mb-16">
-          {/* Narrative */}
+        <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1fr_260px] lg:gap-20 mb-16 md:mb-20">
           <motion.div
-            className="flex flex-col gap-6 max-w-xl"
-            initial={
-              reduceMotion
-                ? { opacity: 1, y: 0 }
-                : { opacity: 0, y: 16 }
-            }
+            className="flex flex-col gap-5 max-w-xl"
+            initial={reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.3 }}
             transition={{
               duration: reduceMotion ? 0 : DUR.medium,
-              delay: reduceMotion ? 0 : DUR.base,
+              delay: reduceMotion ? 0 : 0.2,
               ease: EASE.out,
             }}
           >
@@ -135,25 +112,20 @@ export function About() {
             ))}
           </motion.div>
 
-          {/* Identity facts */}
           <motion.aside
             className="flex flex-col gap-6"
-            initial={
-              reduceMotion
-                ? { opacity: 1 }
-                : { opacity: 0 }
-            }
+            initial={reduceMotion ? { opacity: 1 } : { opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true, amount: 0.3 }}
             transition={{
               duration: reduceMotion ? 0 : DUR.medium,
-              delay: reduceMotion ? 0 : DUR.base + STAGGER.section,
+              delay: reduceMotion ? 0 : 0.3,
               ease: EASE.out,
             }}
           >
             {ABOUT.identity.map((item) => (
               <div key={item.label} className="flex flex-col gap-1">
-                <span className="font-mono text-[11px] uppercase tracking-[0.15em] text-faint">
+                <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-faint">
                   {item.label}
                 </span>
                 <span className="text-sm font-medium text-muted-fg">
@@ -162,62 +134,45 @@ export function About() {
               </div>
             ))}
 
-            {/* Education */}
             <div className="mt-2 flex flex-col gap-1">
-              <span className="font-mono text-[11px] uppercase tracking-[0.15em] text-faint">
+              <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-faint">
                 Education
               </span>
               <span className="text-sm font-medium text-muted-fg">
                 {ABOUT.education.institution}
               </span>
-              <span className="font-mono text-[11px] text-faint">
+              <span className="font-mono text-[10px] text-accent">
                 {ABOUT.education.status}
               </span>
             </div>
           </motion.aside>
         </div>
 
-        {/* Capabilities — asymmetric spatial composition with interaction */}
         <div className="relative">
           <div className="grid grid-cols-1 gap-8 md:grid-cols-12 md:gap-6">
-            {/* BUILDING — primary anchor, largest visual weight */}
             <motion.div
               className="md:col-span-7"
-              initial={
-                reduceMotion
-                  ? { opacity: 1, y: 0 }
-                  : { opacity: 0, y: 20 }
-              }
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={reduceMotion ? { opacity: 1, x: 0 } : { opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, amount: 0.3 }}
               transition={{
                 duration: reduceMotion ? 0 : DUR.medium,
+                delay: reduceMotion ? 0 : 0.2,
                 ease: EASE.out,
               }}
-              style={{
-                opacity: getGroupOpacity("Building"),
-                scale: getGroupScale("Building"),
-              }}
-              onHoverStart={
-                reduceMotion ? undefined : () => setHoveredGroup("Building")
-              }
-              onHoverEnd={
-                reduceMotion ? undefined : () => setHoveredGroup(null)
-              }
-              onFocus={
-                reduceMotion ? undefined : () => setHoveredGroup("Building")
-              }
-              onBlur={
-                reduceMotion ? undefined : () => setHoveredGroup(null)
-              }
+              style={{ opacity: getGroupOpacity("Building") }}
+              onHoverStart={reduceMotion ? undefined : () => setHoveredGroup("Building")}
+              onHoverEnd={reduceMotion ? undefined : () => setHoveredGroup(null)}
+              onFocus={reduceMotion ? undefined : () => setHoveredGroup("Building")}
+              onBlur={reduceMotion ? undefined : () => setHoveredGroup(null)}
             >
-              <div className="group relative rounded-lg bg-surface/50 p-6 md:p-8 transition-colors duration-300 hover:bg-surface/70">
+              <div className="group relative rounded-xl bg-surface/50 p-6 md:p-8 border border-border-subtle transition-all duration-300 hover:border-accent/30 hover:bg-surface/70">
                 <div className="flex flex-col gap-4">
                   <div className="flex items-baseline gap-4">
-                    <span className="font-display text-3xl font-bold tracking-tight text-foreground md:text-4xl">
+                    <span className="font-display text-3xl font-bold tracking-tight text-accent md:text-4xl">
                       Building
                     </span>
-                    <span className="font-mono text-[11px] text-faint">
+                    <span className="font-mono text-[10px] text-faint">
                       {STATUS_LABELS["hands-on"]}
                     </span>
                   </div>
@@ -238,40 +193,23 @@ export function About() {
               </div>
             </motion.div>
 
-            {/* EXPLORING + LEARNING — supporting clusters */}
             <div className="md:col-span-5 flex flex-col gap-6">
-              {/* EXPLORING */}
               <motion.div
-                initial={
-                  reduceMotion
-                    ? { opacity: 1, y: 0 }
-                    : { opacity: 0, y: 16 }
-                }
+                initial={reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.3 }}
                 transition={{
                   duration: reduceMotion ? 0 : DUR.medium,
-                  delay: reduceMotion ? 0 : STAGGER.normal,
+                  delay: reduceMotion ? 0 : 0.3,
                   ease: EASE.out,
                 }}
-                style={{
-                  opacity: getGroupOpacity("Exploring"),
-                  scale: getGroupScale("Exploring"),
-                }}
-                onHoverStart={
-                  reduceMotion ? undefined : () => setHoveredGroup("Exploring")
-                }
-                onHoverEnd={
-                  reduceMotion ? undefined : () => setHoveredGroup(null)
-                }
-                onFocus={
-                  reduceMotion ? undefined : () => setHoveredGroup("Exploring")
-                }
-                onBlur={
-                  reduceMotion ? undefined : () => setHoveredGroup(null)
-                }
+                style={{ opacity: getGroupOpacity("Exploring") }}
+                onHoverStart={reduceMotion ? undefined : () => setHoveredGroup("Exploring")}
+                onHoverEnd={reduceMotion ? undefined : () => setHoveredGroup(null)}
+                onFocus={reduceMotion ? undefined : () => setHoveredGroup("Exploring")}
+                onBlur={reduceMotion ? undefined : () => setHoveredGroup(null)}
               >
-                <div className="group relative rounded-lg bg-surface/30 p-5 md:p-6 transition-colors duration-300 hover:bg-surface/50">
+                <div className="group relative rounded-xl bg-surface/30 p-5 md:p-6 border border-transparent transition-all duration-300 hover:border-accent/20 hover:bg-surface/50">
                   <div className="flex flex-col gap-3">
                     <div className="flex items-baseline gap-3">
                       <span className="font-display text-xl font-semibold tracking-tight text-foreground">
@@ -295,38 +233,22 @@ export function About() {
                 </div>
               </motion.div>
 
-              {/* LEARNING */}
               <motion.div
-                initial={
-                  reduceMotion
-                    ? { opacity: 1, y: 0 }
-                    : { opacity: 0, y: 16 }
-                }
+                initial={reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.3 }}
                 transition={{
                   duration: reduceMotion ? 0 : DUR.medium,
-                  delay: reduceMotion ? 0 : STAGGER.normal * 2,
+                  delay: reduceMotion ? 0 : 0.4,
                   ease: EASE.out,
                 }}
-                style={{
-                  opacity: getGroupOpacity("Learning"),
-                  scale: getGroupScale("Learning"),
-                }}
-                onHoverStart={
-                  reduceMotion ? undefined : () => setHoveredGroup("Learning")
-                }
-                onHoverEnd={
-                  reduceMotion ? undefined : () => setHoveredGroup(null)
-                }
-                onFocus={
-                  reduceMotion ? undefined : () => setHoveredGroup("Learning")
-                }
-                onBlur={
-                  reduceMotion ? undefined : () => setHoveredGroup(null)
-                }
+                style={{ opacity: getGroupOpacity("Learning") }}
+                onHoverStart={reduceMotion ? undefined : () => setHoveredGroup("Learning")}
+                onHoverEnd={reduceMotion ? undefined : () => setHoveredGroup(null)}
+                onFocus={reduceMotion ? undefined : () => setHoveredGroup("Learning")}
+                onBlur={reduceMotion ? undefined : () => setHoveredGroup(null)}
               >
-                <div className="group relative rounded-lg bg-surface/20 p-5 md:p-6 transition-colors duration-300 hover:bg-surface/40">
+                <div className="group relative rounded-xl bg-surface/20 p-5 md:p-6 border border-transparent transition-all duration-300 hover:border-accent/15 hover:bg-surface/40">
                   <div className="flex flex-col gap-3">
                     <div className="flex items-baseline gap-3">
                       <span className="font-display text-xl font-semibold tracking-tight text-foreground">
@@ -353,6 +275,19 @@ export function About() {
           </div>
         </div>
       </Container>
+
+      <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-px" aria-hidden="true">
+        <motion.div
+          className="h-full w-full"
+          style={{
+            background: "linear-gradient(to right, transparent, var(--accent-primary), transparent)",
+          }}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 0.15 }}
+          viewport={{ once: true, amount: 0.5 }}
+          transition={{ duration: reduceMotion ? 0 : DUR.medium, ease: EASE.out }}
+        />
+      </div>
     </section>
   );
 }

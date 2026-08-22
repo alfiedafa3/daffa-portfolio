@@ -69,31 +69,31 @@ export function Journey() {
   return (
     <section
       id="journey"
-      className="relative py-20 md:py-32 overflow-hidden"
+      className="relative py-20 md:py-28 lg:py-32 overflow-hidden"
       aria-labelledby="journey-heading"
     >
-      {/* Background — narrative shift */}
       <div className="pointer-events-none absolute inset-0" aria-hidden="true">
-        {/* Subtle diagonal — different from previous sections */}
         <div
           className="absolute top-0 left-0 h-full w-full"
           style={{
             background:
-              "linear-gradient(170deg, transparent 50%, var(--bg-surface) 50%, var(--bg-surface) 50.3%, transparent 50.3%)",
-            opacity: 0.2,
+              "linear-gradient(170deg, transparent 55%, var(--accent-subtle) 55.5%, transparent 56%)",
+            opacity: 0.4,
+          }}
+        />
+        <div
+          className="absolute top-[20%] right-[5%] h-px w-[25%]"
+          style={{
+            background: "linear-gradient(to left, var(--accent-primary), transparent)",
+            opacity: 0.08,
           }}
         />
       </div>
 
       <Container className="relative z-10">
-        {/* Section header */}
         <motion.div
           className="mb-12 md:mb-16"
-          initial={
-            reduceMotion
-              ? { opacity: 1, y: 0 }
-              : { opacity: 0, y: 16 }
-          }
+          initial={reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
           transition={{
@@ -103,14 +103,13 @@ export function Journey() {
         >
           <h2
             id="journey-heading"
-            className="font-mono text-[11px] uppercase tracking-[0.18em] text-muted-fg"
+            className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-fg"
           >
             Journey
           </h2>
         </motion.div>
 
-        {/* Milestones — editorial staggered blocks */}
-        <div className="flex flex-col gap-8 md:gap-10">
+        <div className="flex flex-col gap-10 md:gap-12">
           {MILESTONES.map((milestone, i) => (
             <motion.article
               key={milestone.title}
@@ -118,7 +117,7 @@ export function Journey() {
               initial={
                 reduceMotion
                   ? { opacity: 1, x: 0 }
-                  : { opacity: 0, x: i % 2 === 0 ? -16 : 16 }
+                  : { opacity: 0, x: i % 2 === 0 ? -24 : 24 }
               }
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, amount: 0.2 }}
@@ -129,10 +128,9 @@ export function Journey() {
               }}
             >
               {milestone.highlight ? (
-                /* Achievement highlight — Free Fire */
-                <div className="relative rounded-xl bg-accent/5 border border-accent/20 p-6 md:p-8">
+                <div className="relative rounded-xl bg-accent/8 border border-accent/30 p-6 md:p-8">
                   <div className="flex flex-col gap-3">
-                    <span className="font-mono text-[10px] uppercase tracking-[0.15em] text-accent">
+                    <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-accent">
                       {milestone.category}
                     </span>
                     <div className="flex flex-col gap-1">
@@ -147,13 +145,18 @@ export function Journey() {
                       {milestone.description}
                     </p>
                   </div>
+                  <div
+                    className="absolute top-0 right-0 h-24 w-24"
+                    style={{
+                      background: "radial-gradient(circle at top right, var(--accent-primary), transparent 70%)",
+                      opacity: 0.1,
+                    }}
+                  />
                 </div>
               ) : (
-                /* Standard milestone */
-                <div className="grid grid-cols-1 gap-4 md:grid-cols-[200px_1fr] md:gap-8">
-                  {/* Category label */}
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-[180px_1fr] md:gap-10">
                   <div className="flex flex-col gap-1">
-                    <span className="font-mono text-[10px] uppercase tracking-[0.15em] text-faint">
+                    <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-faint">
                       {milestone.category}
                     </span>
                     {milestone.details && (
@@ -170,13 +173,12 @@ export function Journey() {
                     )}
                   </div>
 
-                  {/* Content */}
                   <div className="flex flex-col gap-2">
                     <h3 className="font-display text-xl font-semibold tracking-tight text-foreground md:text-2xl">
                       {milestone.title}
                     </h3>
                     {milestone.subtitle && (
-                      <span className="text-sm text-accent">
+                      <span className="text-sm text-accent font-medium">
                         {milestone.subtitle}
                       </span>
                     )}
@@ -190,6 +192,19 @@ export function Journey() {
           ))}
         </div>
       </Container>
+
+      <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-px" aria-hidden="true">
+        <motion.div
+          className="h-full w-full"
+          style={{
+            background: "linear-gradient(to right, transparent, var(--accent-primary), transparent)",
+          }}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 0.1 }}
+          viewport={{ once: true, amount: 0.5 }}
+          transition={{ duration: reduceMotion ? 0 : DUR.medium, ease: EASE.out }}
+        />
+      </div>
     </section>
   );
 }
