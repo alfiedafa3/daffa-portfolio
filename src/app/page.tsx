@@ -1,12 +1,10 @@
 import { Navigation } from "@/components/layout/navigation";
 import { Hero } from "@/components/sections/hero";
 import { About } from "@/components/sections/about";
+import { Work } from "@/components/sections/work";
 
 /**
- * Phase 03A: Navigation + Hero + About
- *
- * The homepage now contains Navigation, Hero, and About sections.
- * Additional sections will be added in future phases.
+ * Portfolio — Navigation + Hero + About + Work
  */
 
 export default function Home() {
@@ -15,6 +13,7 @@ export default function Home() {
       <Navigation />
       <Hero />
       <About />
+      <Work />
     </>
   );
 }

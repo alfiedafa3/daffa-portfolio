@@ -286,16 +286,9 @@ export function Hero() {
 
               {/* CTAs */}
               <div className="flex flex-wrap items-center gap-4">
-                {/*
-                  Primary CTA: Work section not yet implemented.
-                  Using <button> to keep the CTA visually present and accessible
-                  without a broken anchor. Will convert to <a href="#work"> when
-                  the Work section exists.
-                */}
-                <motion.button
-                  type="button"
+                <motion.a
+                  href="#work"
                   className="group inline-flex items-center justify-center gap-2 rounded-lg bg-accent px-6 py-3 text-sm font-medium text-accent-foreground transition-colors hover:bg-accent-hover active:scale-[0.98]"
-                  aria-label="Explore Work (coming soon)"
                   whileHover={
                     reduceMotion ? undefined : { scale: 1.02 }
                   }
@@ -311,7 +304,7 @@ export function Hero() {
                   >
                     →
                   </motion.span>
-                </motion.button>
+                </motion.a>
                 <motion.a
                   href={`https://github.com/${SITE.github}`}
                   target="_blank"

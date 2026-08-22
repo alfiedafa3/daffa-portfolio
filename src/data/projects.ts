@@ -1,6 +1,6 @@
 /**
  * Project data for the portfolio.
- * Only includes confirmed, real projects. Unknowns are structurally ready but not rendered as facts.
+ * Only includes confirmed, real projects.
  */
 
 export interface Project {
@@ -8,22 +8,24 @@ export interface Project {
   name: string;
   tagline: string;
   description: string;
+  role: string;
   stack: string[];
+  architecture: string[];
   status: "active" | "archived" | "concept";
-  link?: string;
-  github?: string;
-  image?: string; // Placeholder path, not a fake screenshot
+  /** Public live URL — only shown when deployed and verified */
+  liveUrl?: string;
 }
 
 export const PROJECTS: Project[] = [
   {
     id: "twous",
     name: "TwoOfUs",
-    tagline: "AI-assisted relationship companion",
+    tagline: "Private AI relationship companion",
     description:
-      "A private AI companion designed around reflection, contextual understanding, missions, and recurring insights. Built to support genuine connection through thoughtful, personalised interaction.",
-    stack: ["Next.js", "TypeScript", "Supabase", "AI Integration"],
+      "A private AI-assisted relationship companion focused on reflection, contextual understanding, missions, and recurring insights. AI is not a judge. It supports reflection and understanding.",
+    role: "Product concept, frontend development, AI workflow design",
+    stack: ["Next.js 14", "TypeScript", "Tailwind CSS"],
+    architecture: ["Supabase", "OpenRouter AI", "RLS", "Server-side AI"],
     status: "active",
-    image: "/projects/twous-placeholder.png",
   },
 ];
