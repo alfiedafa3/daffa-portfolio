@@ -48,13 +48,13 @@ export function Contact() {
           <motion.div
             className="flex flex-col items-center gap-6"
             initial={
-              reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }
+              reduceMotion ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.96 }
             }
-            whileInView={{ opacity: 1, y: 0 }}
+            whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true, amount: 0.3 }}
             transition={{
               duration: reduceMotion ? 0 : DUR.medium,
-              ease: EASE.out,
+              ease: EASE.gentle,
             }}
           >
             <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted-fg">
@@ -74,7 +74,7 @@ export function Contact() {
           {primary && (
             <motion.div
               initial={
-                reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }
+                reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }
               }
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.3 }}
@@ -88,7 +88,7 @@ export function Contact() {
                 href={primary.href}
                 target={primary.external ? "_blank" : undefined}
                 rel={primary.external ? "noopener noreferrer" : undefined}
-                className="group inline-flex items-center gap-3 rounded-full border border-border-default px-7 py-3.5 text-sm font-medium text-foreground transition-colors duration-300 hover:border-accent hover:text-accent"
+                className="btn-primary group inline-flex items-center gap-3 rounded-full border border-border-default px-7 py-3.5 text-sm font-medium text-foreground hover:border-accent hover:text-accent"
               >
                 <span>{primary.label}</span>
                 <span

@@ -142,10 +142,13 @@ export function Navigation() {
           aria-label="Main navigation"
         >
           {/* Brand — XEVRYN identity */}
-          <a
+          <motion.a
             href="#"
             className="flex items-center gap-2 font-mono text-sm font-medium tracking-widest text-foreground transition-colors hover:text-accent"
             aria-label="Xevryn - Daffa Alfie portfolio"
+            initial={{ opacity: 0, x: -16 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
           >
             {/* X mark */}
             <svg
@@ -171,10 +174,15 @@ export function Navigation() {
             </svg>
             {/* Wordmark — hidden on mobile, visible on desktop */}
             <span className="hidden sm:inline">XEVRYN</span>
-          </a>
+          </motion.a>
 
           {/* Desktop Navigation */}
-          <div className="hidden items-center gap-8 md:flex">
+          <motion.div
+            className="hidden items-center gap-8 md:flex"
+            initial={{ opacity: 0, x: 16 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+          >
             {NAV_ITEMS.map((item) => {
               const isActive = activeSection === item.href.slice(1);
               return (
@@ -184,21 +192,11 @@ export function Navigation() {
                   onClick={(e) => handleNavClick(e, item.href)}
                   aria-current={isActive ? "page" : undefined}
                   className={cn(
-                    "text-[13px] font-medium uppercase tracking-[0.08em] transition-colors duration-200",
+                    "nav-link text-[13px] font-medium uppercase tracking-[0.08em] transition-colors duration-200",
                     isActive
                       ? "text-foreground"
                       : "text-muted-fg hover:text-foreground"
                   )}
-                  style={{
-                    transform:
-                      motionMounted && isActive && !isReduced
-                        ? "scale(1.08)"
-                        : "scale(1)",
-                    transformOrigin: "center",
-                    transition: isReduced
-                      ? "color 0.2s"
-                      : "color 0.2s, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
-                  }}
                 >
                   {item.label}
                 </a>
@@ -208,12 +206,12 @@ export function Navigation() {
               href={`https://github.com/${SITE.github}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[13px] font-medium uppercase tracking-[0.08em] text-muted-fg transition-colors hover:text-foreground"
+              className="nav-link text-[13px] font-medium uppercase tracking-[0.08em] text-muted-fg transition-colors hover:text-foreground"
               aria-label="GitHub profile"
             >
               GitHub
             </a>
-          </div>
+          </motion.div>
 
           {/* Mobile Menu Button */}
           <button

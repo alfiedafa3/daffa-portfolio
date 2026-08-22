@@ -117,10 +117,10 @@ export function Journey() {
               className="relative"
               initial={
                 reduceMotion
-                  ? { opacity: 1, y: 0 }
-                  : { opacity: 0, y: 20 }
+                  ? { opacity: 1, x: 0 }
+                  : { opacity: 0, x: i % 2 === 0 ? -16 : 16 }
               }
-              whileInView={{ opacity: 1, y: 0 }}
+              whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, amount: 0.2 }}
               transition={{
                 duration: reduceMotion ? 0 : DUR.medium,

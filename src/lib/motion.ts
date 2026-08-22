@@ -49,7 +49,7 @@ export function useReducedMotionSafe(
   return { reduce, mounted: true };
 }
 
-/** Primary easing — sharp entry, smooth settle */
+/** Easing — sharp entry, smooth settle */
 export const EASE = {
   /** Primary: fast start, decelerate to rest */
   out: [0.22, 1, 0.36, 1] as [number, number, number, number],
@@ -57,6 +57,8 @@ export const EASE = {
   gentle: [0.16, 1, 0.3, 1] as [number, number, number, number],
   /** Quick snap for micro-interactions */
   snap: [0.2, 0, 0, 1] as [number, number, number, number],
+  /** Smooth draw for lines and reveals */
+  draw: [0.65, 0, 0.35, 1] as [number, number, number, number],
 } as const;
 
 /** Duration tokens in seconds */
@@ -71,6 +73,10 @@ export const DUR = {
   slow: 0.7,
   /** Cinematic — 0.8s — hero headline masked reveal */
   cinematic: 0.8,
+  /** Draw — 0.6s — line/clip-path reveals */
+  draw: 0.6,
+  /** Entrance — 0.35s — staggered element entrance */
+  entrance: 0.35,
 } as const;
 
 /** Stagger delays for sequential reveals */

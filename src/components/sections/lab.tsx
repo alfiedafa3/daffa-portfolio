@@ -103,19 +103,19 @@ export function Lab() {
             initial={
               reduceMotion
                 ? { opacity: 1, y: 0 }
-                : { opacity: 0, y: 20 }
+                : { opacity: 0, x: -24 }
             }
-            whileInView={{ opacity: 1, y: 0 }}
+            whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, amount: 0.2 }}
             transition={{
               duration: reduceMotion ? 0 : DUR.medium,
               ease: EASE.out,
             }}
           >
-            <div className="group relative rounded-xl bg-surface/40 p-6 md:p-8 transition-colors duration-300 hover:bg-surface/60 h-full">
+            <div className="card-hover group relative rounded-xl bg-surface/40 p-6 md:p-8 h-full">
               <div className="flex flex-col gap-4">
                 <div className="flex items-baseline gap-3">
-                  <span className="font-display text-2xl font-bold tracking-tight text-foreground md:text-3xl">
+                  <span className="font-display text-2xl font-bold tracking-tight text-accent md:text-3xl">
                     {EXPERIMENTS[0].label}
                   </span>
                   <span className="font-mono text-[10px] text-faint">
@@ -145,7 +145,7 @@ export function Lab() {
             initial={
               reduceMotion
                 ? { opacity: 1, y: 0 }
-                : { opacity: 0, y: 16 }
+                : { opacity: 0, y: 20 }
             }
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.3 }}
@@ -155,7 +155,7 @@ export function Lab() {
               ease: EASE.out,
             }}
           >
-            <div className="group relative rounded-xl bg-surface/30 p-5 md:p-6 transition-colors duration-300 hover:bg-surface/50 h-full">
+            <div className="card-hover group relative rounded-xl bg-surface/30 p-5 md:p-6 h-full">
               <div className="flex flex-col gap-3">
                 <div className="flex items-baseline gap-3">
                   <span className="font-display text-lg font-semibold tracking-tight text-foreground">
@@ -230,10 +230,10 @@ export function Lab() {
             className="md:col-span-12"
             initial={
               reduceMotion
-                ? { opacity: 1, y: 0 }
-                : { opacity: 0, y: 16 }
+                ? { opacity: 1, x: 0 }
+                : { opacity: 0, x: 24 }
             }
-            whileInView={{ opacity: 1, y: 0 }}
+            whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, amount: 0.3 }}
             transition={{
               duration: reduceMotion ? 0 : DUR.medium,
@@ -241,7 +241,7 @@ export function Lab() {
               ease: EASE.out,
             }}
           >
-            <div className="group relative rounded-xl bg-surface/20 p-5 md:p-6 transition-colors duration-300 hover:bg-surface/40">
+            <div className="card-hover group relative rounded-xl bg-surface/20 p-5 md:p-6">
               <div className="flex flex-col gap-3 md:flex-row md:items-start md:gap-8">
                 <div className="flex flex-col gap-2 md:min-w-[200px]">
                   <div className="flex items-baseline gap-3">

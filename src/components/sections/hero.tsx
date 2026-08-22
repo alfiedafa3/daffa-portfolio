@@ -129,12 +129,12 @@ export function Hero() {
         <motion.div
           className="absolute inset-0"
           style={{
-            x: reduceMotion ? 0 : geoX,
-            y: reduceMotion ? 0 : geoY,
-            opacity: reduceMotion ? 1 : undefined,
+            x: motionMounted && !reduceMotion ? geoX : 0,
+            y: motionMounted && !reduceMotion ? geoY : 0,
           }}
-          initial={reduceMotion ? { opacity: 1 } : { opacity: 0 }}
-          animate={{ opacity: 1 }}
+          initial={{ opacity: reduceMotion ? 1 : 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: false, amount: 0.4 }}
           transition={{
             duration: reduceMotion ? 0 : DUR.medium,
             delay: reduceMotion ? 0 : HERO_TIMING.geometry,
@@ -194,12 +194,13 @@ export function Hero() {
           <motion.div
             initial={
               reduceMotion
-                ? { opacity: 1, y: 0 }
-                : { opacity: 0, y: 8 }
+                ? { opacity: 1 }
+                : { opacity: 0, x: -12 }
             }
-            animate={{ opacity: 1, y: 0 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: false, amount: 0.5 }}
             transition={{
-              duration: reduceMotion ? 0 : DUR.base,
+              duration: reduceMotion ? 0 : DUR.medium,
               delay: reduceMotion ? 0 : HERO_TIMING.brand,
               ease: EASE.out,
             }}
@@ -209,7 +210,7 @@ export function Hero() {
             </span>
           </motion.div>
 
-          {/* Main Headline — masked typographic reveal */}
+          {/* Main Headline — clip-path masked reveal */}
           <motion.div
             ref={headlineRef}
             className="flex flex-col gap-2"
@@ -229,9 +230,10 @@ export function Hero() {
                     initial={
                       reduceMotion
                         ? { opacity: 1, y: 0 }
-                        : { y: "100%", opacity: 0 }
+                        : { y: "110%" }
                     }
-                    animate={{ y: 0, opacity: 1 }}
+                    whileInView={{ y: 0 }}
+                    viewport={{ once: false, amount: 0.45 }}
                     transition={{
                       duration: reduceMotion ? 0 : DUR.cinematic,
                       delay:
@@ -240,7 +242,10 @@ export function Hero() {
                           : i === 0
                             ? HERO_TIMING.headline1
                             : HERO_TIMING.headline2,
-                      ease: EASE.out,
+                      ease: EASE.gentle,
+                    }}
+                    style={{
+                      clipPath: "inset(0 0 0 0)",
                     }}
                   >
                     {word}
@@ -253,11 +258,12 @@ export function Hero() {
             <motion.div
               className="mt-4 h-px bg-accent"
               initial={reduceMotion ? { scaleX: 1 } : { scaleX: 0 }}
-              animate={{ scaleX: 1 }}
+              whileInView={{ scaleX: 1 }}
+              viewport={{ once: false, amount: 0.45 }}
               transition={{
-                duration: reduceMotion ? 0 : DUR.slow,
+                duration: reduceMotion ? 0 : DUR.draw,
                 delay: reduceMotion ? 0 : HERO_TIMING.accent,
-                ease: EASE.out,
+                ease: EASE.draw,
               }}
               style={{ transformOrigin: "left" }}
             />
@@ -269,10 +275,11 @@ export function Hero() {
               className="flex flex-col gap-6 max-w-lg"
               initial={
                 reduceMotion
-                  ? { opacity: 1, y: 0 }
-                  : { opacity: 0, y: 16 }
+                  ? { opacity: 1, x: 0 }
+                  : { opacity: 0, x: 16 }
               }
-              animate={{ opacity: 1, y: 0 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: false, amount: 0.35 }}
               transition={{
                 duration: reduceMotion ? 0 : DUR.medium,
                 delay: reduceMotion ? 0 : HERO_TIMING.copy,
@@ -288,7 +295,7 @@ export function Hero() {
               <div className="flex flex-wrap items-center gap-4">
                 <motion.a
                   href="#work"
-                  className="group inline-flex items-center justify-center gap-2 rounded-lg bg-accent px-6 py-3 text-sm font-medium text-accent-foreground transition-colors hover:bg-accent-hover active:scale-[0.98]"
+                  className="btn-primary group inline-flex items-center justify-center gap-2 rounded-lg bg-accent px-6 py-3 text-sm font-medium text-accent-foreground active:scale-[0.98]"
                   whileHover={
                     reduceMotion ? undefined : { scale: 1.02 }
                   }
@@ -309,7 +316,7 @@ export function Hero() {
                   href={`https://github.com/${SITE.github}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center rounded-lg border border-border-default px-6 py-3 text-sm font-medium text-foreground transition-colors hover:bg-surface active:scale-[0.98]"
+                  className="nav-link inline-flex items-center justify-center rounded-lg border border-border-default px-6 py-3 text-sm font-medium text-foreground transition-colors hover:bg-surface active:scale-[0.98]"
                   whileHover={
                     reduceMotion ? undefined : { scale: 1.02 }
                   }
@@ -326,10 +333,11 @@ export function Hero() {
               className="hidden flex-col gap-3 lg:flex lg:min-w-[200px]"
               initial={
                 reduceMotion
-                  ? { opacity: 1 }
-                  : { opacity: 0 }
+                  ? { opacity: 1, x: 0 }
+                  : { opacity: 0, x: 20 }
               }
-              animate={{ opacity: 1 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: false, amount: 0.35 }}
               transition={{
                 duration: reduceMotion ? 0 : DUR.medium,
                 delay: reduceMotion ? 0 : HERO_TIMING.index,
@@ -343,16 +351,17 @@ export function Hero() {
                   className="flex items-baseline gap-3"
                   initial={
                     reduceMotion
-                      ? { opacity: 1, y: 0 }
-                      : { opacity: 0, y: 6 }
+                      ? { opacity: 1, x: 0 }
+                      : { opacity: 0, x: 12 }
                   }
-                  animate={{ opacity: 1, y: 0 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: false, amount: 0.35 }}
                   transition={{
-                    duration: reduceMotion ? 0 : DUR.base,
+                    duration: reduceMotion ? 0 : DUR.entrance,
                     delay:
                       reduceMotion
                         ? 0
-                        : HERO_TIMING.index + i * STAGGER.normal,
+                        : HERO_TIMING.index + 0.15 + i * STAGGER.tight,
                     ease: EASE.out,
                   }}
                 >
@@ -372,7 +381,8 @@ export function Hero() {
                     ? { opacity: 1 }
                     : { opacity: 0 }
                 }
-                animate={{ opacity: 1 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: false, amount: 0.35 }}
                 transition={{
                   duration: reduceMotion ? 0 : DUR.base,
                   delay: reduceMotion ? 0 : HERO_TIMING.connection,
@@ -390,7 +400,8 @@ export function Hero() {
       <motion.div
         className="absolute bottom-0 left-0 right-0 h-px bg-border-subtle"
         initial={reduceMotion ? { scaleX: 1 } : { scaleX: 0 }}
-        animate={{ scaleX: 1 }}
+        whileInView={{ scaleX: 1 }}
+        viewport={{ once: false, amount: 0.5 }}
         transition={{
           duration: reduceMotion ? 0 : DUR.slow,
           delay: reduceMotion ? 0 : HERO_TIMING.accent + 0.1,
